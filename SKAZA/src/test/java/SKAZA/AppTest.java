@@ -1,4 +1,4 @@
-package skaza.core;
+package skaza;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
