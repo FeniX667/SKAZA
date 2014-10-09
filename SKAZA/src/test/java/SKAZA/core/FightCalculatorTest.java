@@ -9,16 +9,6 @@ import junit.framework.TestSuite;
 
 public class FightCalculatorTest extends TestCase {
 
-    public FightCalculatorTest( String testName )
-    {
-        super( testName );
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite( FightCalculatorTest.class );
-    }
-
     public void testDoKill()
     {
     	//given
@@ -26,10 +16,10 @@ public class FightCalculatorTest extends TestCase {
     	fightCalculator.a = 5;
     	fightCalculator.b = 3;
     	    	
-    	//then
+    	//when
     	Integer result = fightCalculator.doKill(10, 5);
     	
     	//then  	
-        assertTrue( result == 1 );
+        assertTrue( result == 13 );
     }
 }

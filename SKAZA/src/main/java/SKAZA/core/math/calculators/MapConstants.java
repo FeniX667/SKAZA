@@ -3,6 +3,7 @@ package skaza.core.math.calculators;
 public class MapConstants {
 	
 	public final Integer numberOfUpperCornerNeighbours = 2;
+	public final Integer numberOfLowerCornerNeighbours = 3;
 	public final Integer numberOfOuterBaseNeighbours = 3;
 	public final Integer numberOfInnerBaseNeighbours = 5;
 	public final Integer numberOfSideRowNeighbours = 4;
