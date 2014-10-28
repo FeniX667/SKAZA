@@ -1,8 +1,8 @@
-package skaza.core;
+package SKAZA.core;
 
 import javax.inject.Inject;
 
-import skaza.core.math.calculators.FightCalculator;
+import SKAZA.core.math.calculators.FightCalculator;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

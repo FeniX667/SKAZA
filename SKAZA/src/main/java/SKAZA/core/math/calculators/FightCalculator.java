@@ -1,4 +1,4 @@
-package skaza.core.math.calculators;
+package SKAZA.core.math.calculators;
 
 public class FightCalculator {
 	public Integer a;

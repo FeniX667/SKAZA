@@ -1,6 +1,6 @@
-package skaza;
+package SKAZA;
 
-import skaza.core.models.map.Grid;
+import SKAZA.core.SimulationEngineThread;
 
 /**
  * Hello world!
@@ -8,9 +8,15 @@ import skaza.core.models.map.Grid;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-    	Grid grid = new Grid();
-        System.out.println( "Hello World!" );
+    @SuppressWarnings("deprecation")
+	public static void main( String[] args ){
+    	SimulationEngineThread mainSimulationEngineThread = new SimulationEngineThread();
+    	
+    	
+    	
+    	/*mainSimulationEngineThread.threadController.start();
+		mainSimulationEngineThread.threadController.suspend();
+        mainSimulationEngineThread.threadController.resume();*/
+                   	
     }
 }
