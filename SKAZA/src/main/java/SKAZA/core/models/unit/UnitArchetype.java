@@ -1,19 +1,14 @@
 package SKAZA.core.models.unit;
 
-public class UnitStatistics {
+public class UnitArchetype {
 	String name;
 	Byte attack;
 	Byte defense;
 	Byte damage;
 	Byte health;
 	Byte speed;
-	Byte morale;
-	Byte stamina;
 	Integer effectiveAmountOfFighters;
 		
-	public UnitStatistics() {
-	}
-	
 	public String getName() {
 		return name;
 	}
@@ -49,18 +44,6 @@ public class UnitStatistics {
 	}
 	public void setSpeed(Byte speed) {
 		this.speed = speed;
-	}
-	public Byte getMorale() {
-		return morale;
-	}
-	public void setMorale(Byte morale) {
-		this.morale = morale;
-	}
-	public Byte getStamina() {
-		return stamina;
-	}
-	public void setStamina(Byte exhaustion) {
-		this.stamina = exhaustion;
 	}
 	public Integer getEffectiveAmountOfFighters() {
 		return effectiveAmountOfFighters;

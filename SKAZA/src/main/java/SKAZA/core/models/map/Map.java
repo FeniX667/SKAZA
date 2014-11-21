@@ -1,8 +1,12 @@
 package SKAZA.core.models.map;
 
-public class Map extends Grid {
-	
-	public Map(){
-		super();
-	}
+import SKAZA.core.math.constants.MapConstants;
+
+public class Map {
+	public Cell[][] matrix; 
+	public Byte height;
+	public Byte width;
+	public Byte lastRow;
+	public Byte lastColumn;
+
 }

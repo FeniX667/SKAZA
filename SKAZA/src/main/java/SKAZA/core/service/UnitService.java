@@ -1,15 +1,11 @@
 package SKAZA.core.service;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import SKAZA.core.models.map.Map;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.UnitOrientation;
 import SKAZA.core.models.unit.Unit;
 import SKAZA.core.models.unit.UnitState;
-import SKAZA.core.models.unit.UnitStatistics;
+import SKAZA.core.models.unit.UnitArchetype;
 
 public class UnitService {
 	
@@ -18,21 +14,38 @@ public class UnitService {
 		return null;
 	}
 	
-	public static Unit createUnit(UnitStatistics _unitStatistics){
+	public static Unit createUnit(Nation nation, UnitArchetype archetype){
 		Unit unit = new Unit();
-		unit.setUnitStatistics( new UnitStatistics() ) ;
-		unit.setUnitState( UnitState.IDLE );
-		unit.setUnitOrientation( UnitOrientation.NORTH );
-		unit.setDistanceTravelled( new Byte((byte) 0) );
+		
+		unit = setBasicStatistics(unit, nation);
+		unit = setArchetype(unit, archetype);
 		
 		return unit;
+	}
+
+	private static Unit setBasicStatistics(Unit unit, Nation nation) {
+		unit.setNrOfSoldiers( new Integer(0) );
+		unit.setState( UnitState.IDLE );
+		unit.setOrientation( UnitOrientation.NORTH );
+		unit.setDistanceTravelled( new Byte((byte) 0) );
+		unit.setMorale( new Byte((byte) (0)) );
+		unit.setNation(nation);
+		
+		return unit;
+	}
+
+	private static Unit setArchetype(Unit unit, UnitArchetype archetype) {
+		unit.setArchetype( archetype);
+		
+		return unit;		
 	}
 
 	public static boolean isArmyDefeated(ArrayList<Unit> unitList) {
 		boolean isDefeated = true;
 		
-		for( Unit unit : unitList ){
-			if( unit.getUnitState() != UnitState.FLEEING )
+		for( Unit unit:unitList ){
+			if( unit.getState() != UnitState.FLEEING && 
+					unit.getState() != UnitState.DEAD )
 				return false;
 		}
 		

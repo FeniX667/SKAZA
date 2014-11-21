@@ -42,9 +42,8 @@ public class SimulationEngine {
 		checkFights();
 		checkMorale();
 		moveUnits();
-		unLockOrderList();
-		setNewOrders();
-		lockOrderList();
+		executeNewOrdersIfPossible();
+		generateOrderList();
 	}
 	
 	private void checkFights() {
@@ -62,17 +61,12 @@ public class SimulationEngine {
 		
 	}
 
-	private void unLockOrderList() {
+	private void executeNewOrdersIfPossible() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void setNewOrders() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void lockOrderList() {
+	private void generateOrderList() {
 		// TODO Auto-generated method stub
 		
 	}
