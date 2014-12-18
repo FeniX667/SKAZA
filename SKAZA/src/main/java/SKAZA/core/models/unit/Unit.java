@@ -62,5 +62,4 @@ public class Unit{
 		this.nation = nation;
 	}
 	
-	
 }
