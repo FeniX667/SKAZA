@@ -4,9 +4,9 @@ import SKAZA.core.math.constants.MapConstants;
 
 public class Map {
 	public Cell[][] matrix; 
-	public Byte height;
-	public Byte width;
-	public Byte lastRow;
-	public Byte lastColumn;
+	public Integer height;
+	public Integer width;
+	public Integer lastRow;
+	public Integer lastColumn;
 
 }

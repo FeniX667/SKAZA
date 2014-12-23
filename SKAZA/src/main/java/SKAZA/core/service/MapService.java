@@ -1,23 +1,16 @@
 package SKAZA.core.service;
 
-import javafx.application.Application;
-
-import javax.inject.Inject;
-
 import SKAZA.core.math.constants.MapConstants;
 import SKAZA.core.models.map.Cell;
 import SKAZA.core.models.map.Map;
 
 public class MapService {
-	
-	private static MapConstants mapConstants = new MapConstants();
-	
 	public static Map createMap(){
 		Map map = new Map();
-		map.height = new Byte (mapConstants.gridHeight);
-		map.width = new Byte (mapConstants.gridWidth);
-		map.lastRow = new Byte ((byte) (map.height-1));
-		map.lastColumn = new Byte ((byte) (map.width-1));
+		map.height = new Integer (MapConstants.gridHeight);
+		map.width = new Integer (MapConstants.gridWidth);
+		map.lastRow = new Integer (MapConstants.gridHeight-1);
+		map.lastColumn = new Integer (MapConstants.gridWidth-1);
 		
 		map.matrix = new Cell[map.height][map.width];		
 		initializeMatrixCells(map);
@@ -36,62 +29,62 @@ public class MapService {
 	
 	private static void initializeCornerCells(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
-		matrix[0][0] = CellService.createCell(mapConstants.numberOfUpperCornerNeighbours);
-		matrix[0][lastColumn] = CellService.createCell( mapConstants.numberOfUpperCornerNeighbours );
-		matrix[lastRow][0] = CellService.createCell( mapConstants.numberOfLowerCornerNeighbours );
-		matrix[lastRow][lastColumn] = CellService.createCell( mapConstants.numberOfLowerCornerNeighbours );
+		matrix[0][0] = CellService.createCell(MapConstants.numberOfUpperCornerNeighbours, 0, 0);
+		matrix[0][lastColumn] = CellService.createCell( MapConstants.numberOfUpperCornerNeighbours, 0, lastColumn );
+		matrix[lastRow][0] = CellService.createCell( MapConstants.numberOfLowerCornerNeighbours, lastRow, 0 );
+		matrix[lastRow][lastColumn] = CellService.createCell( MapConstants.numberOfLowerCornerNeighbours, lastRow, lastColumn );
 	}
 
 	private static void initializeOuterBaseCells(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int w = 2 ; w < lastColumn ; w+=2 ){
-			matrix[0][w] = CellService.createCell( mapConstants.numberOfOuterBaseNeighbours );
+			matrix[0][w] = CellService.createCell( MapConstants.numberOfOuterBaseNeighbours, 0, w );
 		}
 		
 		for (int w = 1 ; w < lastColumn ; w+=2 ){
-			matrix[lastRow][w] = CellService.createCell( mapConstants.numberOfOuterBaseNeighbours );
+			matrix[lastRow][w] = CellService.createCell( MapConstants.numberOfOuterBaseNeighbours, lastRow, w );
 		}
 	}
 
 	private static void initializeInnerBaseCells(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int w = 1 ; w < lastColumn ; w+=2 ){
-			matrix[0][w] = CellService.createCell( mapConstants.numberOfInnerBaseNeighbours );
+			matrix[0][w] = CellService.createCell( MapConstants.numberOfInnerBaseNeighbours, 0, w );
 		}		
 		for (int w = 2 ; w < lastColumn ; w+=2 ){
-			matrix[lastRow][w] = CellService.createCell( mapConstants.numberOfInnerBaseNeighbours );
+			matrix[lastRow][w] = CellService.createCell( MapConstants.numberOfInnerBaseNeighbours, lastRow, w );
 		}
 	}
 
 	private static void initializeSideCells(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int h = 1 ; h < lastRow ; h++){			
-			matrix[h][0] = CellService.createCell( mapConstants.numberOfSideNeighbours );
-			matrix[h][lastColumn] = CellService.createCell( mapConstants.numberOfSideNeighbours );
+			matrix[h][0] = CellService.createCell( MapConstants.numberOfSideNeighbours, h, 0 );
+			matrix[h][lastColumn] = CellService.createCell( MapConstants.numberOfSideNeighbours, h, lastColumn );
 		}
 	}
 
 	private static void initializeInnerCells(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int h = 0 ; h < lastRow ; h++){
 			for (int w = 0 ; w < lastColumn ; w++){
 				if( matrix[h][w] == null )
-					matrix[h][w] = CellService.createCell( mapConstants.numberOfNormalCellNeighbours );
+					matrix[h][w] = CellService.createCell( MapConstants.numberOfNormalCellNeighbours, h, w );
 			}
 		}		
 	}
@@ -106,8 +99,8 @@ public class MapService {
 
 	private static void initializeCornerNeighbours(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		matrix[0][0].neighbours[0] = matrix[0][1];
 		matrix[0][0].neighbours[1] = matrix[1][0];
@@ -115,19 +108,19 @@ public class MapService {
 		matrix[0][lastColumn].neighbours[0] = matrix[1][lastColumn];
 		matrix[0][lastColumn].neighbours[1] = matrix[0][lastColumn-1];
 		
-		matrix[lastRow][0].neighbours[0] = matrix[lastColumn-1][0];
-		matrix[lastRow][0].neighbours[1] = matrix[lastColumn-1][1];
+		matrix[lastRow][0].neighbours[0] = matrix[lastRow-1][0];
+		matrix[lastRow][0].neighbours[1] = matrix[lastRow-1][1];
 		matrix[lastRow][0].neighbours[2] = matrix[lastRow][1];
 		
-		matrix[lastRow][lastColumn].neighbours[0] = matrix[lastColumn-1][lastColumn];
+		matrix[lastRow][lastColumn].neighbours[0] = matrix[lastRow-1][lastColumn];
 		matrix[lastRow][lastColumn].neighbours[1] = matrix[lastRow][lastColumn-1];		
-		matrix[lastRow][lastColumn].neighbours[2] = matrix[lastColumn-1][lastColumn-1];
+		matrix[lastRow][lastColumn].neighbours[2] = matrix[lastRow-1][lastColumn-1];
 	}
 
 	private static void initializeOuterBaseNeighbours(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int w = 2 ; w < lastColumn ; w+=2 ){
 			matrix[0][w].neighbours[0] = matrix[0][w+1];
@@ -136,7 +129,7 @@ public class MapService {
 		}
 		
 		for (int w = 1 ; w < lastColumn ; w+=2 ){
-			matrix[lastRow][w].neighbours[0] = matrix[lastColumn-1][w];
+			matrix[lastRow][w].neighbours[0] = matrix[lastRow-1][w];
 			matrix[lastRow][w].neighbours[1] = matrix[lastRow][w+1];
 			matrix[lastRow][w].neighbours[2] = matrix[lastRow][w-1];
 		}
@@ -144,8 +137,8 @@ public class MapService {
 
 	private static void initializeSideNeighbours(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int h = 1 ; h < lastRow ; h++){			
 			matrix[h][0].neighbours[0] = matrix[h-1][0];
@@ -162,8 +155,8 @@ public class MapService {
 
 	private static void initializeInnerBaseNeighbours(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int w = 1 ; w < lastColumn ; w+=2 ){
 			Cell cell = matrix[0][w];
@@ -185,8 +178,8 @@ public class MapService {
 
 	private static void initializeInnerNeighbours(Map map) {
 		Cell[][] matrix = map.matrix;
-		Byte lastColumn = map.lastColumn;
-		Byte lastRow = map.lastRow;
+		Integer lastColumn = map.lastColumn;
+		Integer lastRow = map.lastRow;
 		
 		for (int h = 1 ; h < lastRow ; h++){
 			for (int w = 1 ; w < lastColumn ; w++){

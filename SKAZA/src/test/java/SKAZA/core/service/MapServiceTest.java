@@ -80,7 +80,7 @@ public class MapServiceTest extends TestCase {
 		cell = map.matrix[0][lastColumn];
 		
 		assertEquals(new Byte("4"), cell.neighbours[0].numberOfNeighbours);
-		assertEquals(new Byte("5"), cell.neighbours[1].numberOfNeighbours);
+		assertEquals(new Byte("5"), cell.neighbours[1].numberOfNeighbours); 	
 
 		cell = map.matrix[lastRow][0];
 		

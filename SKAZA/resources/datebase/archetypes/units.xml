@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unitArchetypes>
+    <unitArchetype>
+        <attack>4</attack>
+        <damage>2</damage>
+        <defense>5</defense>
+        <effectiveAmountOfFighters>100</effectiveAmountOfFighters>
+        <health>10</health>
+        <name>Pikeman</name>
+        <speed>4</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>6</attack>
+        <damage>3</damage>
+        <defense>5</defense>
+        <effectiveAmountOfFighters>100</effectiveAmountOfFighters>
+        <health>10</health>
+        <name>Halberdier</name>
+        <speed>5</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>6</attack>
+        <damage>3</damage>
+        <defense>3</defense>
+        <effectiveAmountOfFighters>300</effectiveAmountOfFighters>
+        <health>10</health>
+        <name>Archer</name>
+        <speed>4</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>8</attack>
+        <damage>4</damage>
+        <defense>6</defense>
+        <effectiveAmountOfFighters>80</effectiveAmountOfFighters>
+        <health>12</health>
+        <name>Swordsman</name>
+        <speed>5</speed>
+    </unitArchetype>
+</unitArchetypes>

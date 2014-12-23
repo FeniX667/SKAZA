@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SKAZA.view.simulation.SimulationOverviewController">
+   <children>
+      <AnchorPane prefHeight="675.0" prefWidth="200.0">
+         <children>
+            <Ellipse fill="DODGERBLUE" layoutX="100.0" layoutY="338.0" radiusX="100.0" radiusY="206.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </AnchorPane>
+      <VBox prefWidth="800.0">
+         <children>
+            <AnchorPane prefHeight="75.0" prefWidth="800.0">
+               <children>
+                  <ProgressBar layoutX="300.0" layoutY="29.0" prefWidth="200.0" progress="0.0" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </AnchorPane>
+            <AnchorPane prefHeight="550.0" prefWidth="800.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+               <children>
+                  <Canvas fx:id="mapCanvas" height="540.0" width="770.0" />
+               </children></AnchorPane>
+            <HBox prefHeight="50.0" prefWidth="800.0">
+               <children>
+                  <ToggleButton mnemonicParsing="false" text="ToggleButton" />
+                  <Slider />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <AnchorPane prefHeight="675.0" prefWidth="200.0">
+         <children>
+            <Ellipse fill="DODGERBLUE" layoutX="100.0" layoutY="338.0" radiusX="100.0" radiusY="206.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+         <HBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </HBox.margin>
+      </AnchorPane>
+   </children>
+</HBox>

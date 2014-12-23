@@ -9,8 +9,8 @@ public class MapConstants {
 	public static Byte numberOfSideNeighbours = 4;
 	public static Byte numberOfNormalCellNeighbours = 6;
 	
-	public static Byte gridHeight = 20;
-	public static Byte gridWidth = 15;
+	public static Byte gridHeight = 13;	//Tylko nieparzyste
+	public static Byte gridWidth = 19;	//Tylko nieparzyste
 	
 	
 }

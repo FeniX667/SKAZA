@@ -11,9 +11,9 @@ public class SimulationEngineThread implements Runnable {
 	
 	public SimulationEngineThread(){
 		simulationEngine = new SimulationEngine();
-		simulationEngine.initialize();
 		
 		simulationStatistics = new SimulationStatistics();
+		
 		threadController = new Thread(this);
 	}
 	

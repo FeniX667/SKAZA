@@ -1,9 +1,10 @@
-package SKAZA.view;
+package SKAZA.view.unitArchetype;
 
 import org.controlsfx.dialog.Dialogs;
 
 import SKAZA.MainApp;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
+import SKAZA.core.repository.UnitArchetypeRepository;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -110,6 +111,6 @@ public class UnitArchetypeOverviewController {
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
 
-        unitArchetypeTable.setItems(mainApp.getArchetypeData());
+        unitArchetypeTable.setItems(UnitArchetypeRepository.archetypeData);
     }
 }

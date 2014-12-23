@@ -1,11 +1,12 @@
-package SKAZA.view;
+package SKAZA.view.unitArchetype;
 
 import java.util.logging.ErrorManager;
 
 import org.controlsfx.dialog.Dialogs;
 
 import SKAZA.MainApp;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
+import SKAZA.core.repository.UnitArchetypeRepository;
 import SKAZA.core.service.UnitArchetypeService;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -49,7 +50,7 @@ public class UnitArchetypeNewDialogController {
         			speedField.getText(), 
         			effectivityField.getText());
             
-    		mainApp.getArchetypeData().add(unitArchetype);
+    		UnitArchetypeRepository.archetypeData.add(unitArchetype);
             dialogStage.close();
         }
     }

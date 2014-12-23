@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="260.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SKAZA.view.UnitArchetypeNewDialogController">
+<AnchorPane prefHeight="260.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SKAZA.view.unitArchetype.UnitArchetypeEditDialogController">
    <children>
       <GridPane prefHeight="200.0" prefWidth="300.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
         <columnConstraints>
@@ -42,12 +42,12 @@
       </GridPane>
       <HBox layoutX="68.0" layoutY="221.0" spacing="5.0">
          <children>
-            <Button layoutX="230.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleOk" prefWidth="80.0" text="OK">
+            <Button defaultButton="true" layoutX="230.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleOk" prefWidth="80.0" text="OK">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Button>
-            <Button layoutX="230.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="80.0" text="Cancel" />
+            <Button cancelButton="true" layoutX="230.0" layoutY="224.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="80.0" text="Cancel" />
          </children>
       </HBox>
    </children>

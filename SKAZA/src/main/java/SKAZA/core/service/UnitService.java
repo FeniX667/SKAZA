@@ -1,23 +1,30 @@
 package SKAZA.core.service;
 
 import java.util.ArrayList;
+
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.UnitOrientation;
 import SKAZA.core.models.unit.Unit;
 import SKAZA.core.models.unit.UnitState;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
+import SKAZA.core.repository.UnitArchetypeRepository;
 
 public class UnitService {
 	
 	public static ArrayList<Unit> createArmy(Nation nation) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Unit> unitList = new ArrayList<Unit>();
+		
+		Unit unit = createUnit(nation, UnitArchetypeRepository.archetypeData.get(0) );
+		
+		unitList.add(unit);
+		
+		return unitList;
 	}
 	
 	public static Unit createUnit(Nation nation, UnitArchetype archetype){
 		Unit unit = new Unit();
 		
-		unit = setBasicStatistics(unit, nation);
+		setBasicStatistics(unit, nation);
 		unit = setArchetype(unit, archetype);
 		
 		return unit;
@@ -27,8 +34,8 @@ public class UnitService {
 		unit.setNrOfSoldiers( new Integer(0) );
 		unit.setState( UnitState.IDLE );
 		unit.setOrientation( UnitOrientation.NORTH );
-		unit.setDistanceTravelled( new Byte((byte) 0) );
-		unit.setMorale( new Byte((byte) (0)) );
+		unit.setDistanceTravelled( new Integer(0) );
+		unit.setMorale( new Integer(0) );
 		unit.setNation(nation);
 		
 		return unit;

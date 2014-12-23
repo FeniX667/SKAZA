@@ -2,7 +2,7 @@ package SKAZA.core.math.calculators;
 
 import SKAZA.core.math.constants.FightConstants;
 import SKAZA.core.models.unit.Unit;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
 
 public class FightCalculator {
 

@@ -1,6 +1,6 @@
 package SKAZA.core.service;
 
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
 
 public class UnitArchetypeService {
 

@@ -1,4 +1,4 @@
-package SKAZA.core.models.unit;
+package SKAZA.core.models.unitArchetype;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;

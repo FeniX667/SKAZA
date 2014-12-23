@@ -4,7 +4,7 @@ import SKAZA.core.math.constants.MapConstants;
 import SKAZA.core.models.map.Cell;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.Unit;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
 import junit.framework.TestCase;
 
 public class UnitServiceTest extends TestCase{

@@ -6,7 +6,7 @@ import SKAZA.core.math.calculators.FightCalculator;
 import SKAZA.core.math.constants.FightConstants;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.Unit;
-import SKAZA.core.models.unit.UnitArchetype;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
 import SKAZA.core.service.UnitArchetypeService;
 import SKAZA.core.service.UnitService;
 import junit.framework.TestCase;

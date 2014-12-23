@@ -10,11 +10,13 @@ public class CellServiceTest extends TestCase {
 	public void testCreateCell(){
 		Cell cell;
 		
-		cell = CellService.createCell( MapConstants.numberOfUpperCornerNeighbours );
+		cell = CellService.createCell( MapConstants.numberOfUpperCornerNeighbours, 0, 0 );
 		
 		assertNotNull(cell);
-		assertNotNull(cell.isUnitPresent);
 		assertNotNull(cell.neighbours);
+		assertNotNull(cell.coordinates);
+		assertEquals(0, cell.coordinates.x);
+		assertEquals(0, cell.coordinates.y);
 		assertEquals( new Byte("2"), cell.numberOfNeighbours );
 		assertEquals( 2, cell.neighbours.length);
 	}
