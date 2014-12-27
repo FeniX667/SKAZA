@@ -56,10 +56,7 @@ public class MainApp extends Application {
     }
 
 	private void initRepositories() {
-        File file = UnitArchetypeRepository.getUnitArchetypeFilePath();
-        if (file != null) {
-        	UnitArchetypeRepository.loadUnitArchetypeDataFromFile(file);
-        }
+        UnitArchetypeRepository.initialize();
 	}
 
 	private void initSimulation() {

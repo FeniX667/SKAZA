@@ -1,12 +1,18 @@
 package SKAZA.core.service;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import junit.framework.TestCase;
 import SKAZA.core.math.constants.MapConstants;
 import SKAZA.core.models.map.Cell;
+import SKAZA.core.repository.UnitArchetypeRepository;
 import SKAZA.core.service.CellService;
 
-public class CellServiceTest extends TestCase {
+public class CellServiceTest {
 	
+	@Test
 	public void testCreateCell(){
 		Cell cell;
 		
@@ -17,7 +23,7 @@ public class CellServiceTest extends TestCase {
 		assertNotNull(cell.coordinates);
 		assertEquals(0, cell.coordinates.x);
 		assertEquals(0, cell.coordinates.y);
-		assertEquals( new Byte("2"), cell.numberOfNeighbours );
+		assertEquals( new Integer(2), cell.numberOfNeighbours );
 		assertEquals( 2, cell.neighbours.length);
 	}
 }

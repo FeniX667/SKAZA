@@ -1,6 +1,9 @@
 package SKAZA.core.math;
 
+import static org.junit.Assert.*;
+
 import org.jmock.Mockery;
+import org.junit.Test;
 
 import SKAZA.core.math.calculators.FightCalculator;
 import SKAZA.core.math.constants.FightConstants;
@@ -11,8 +14,9 @@ import SKAZA.core.service.UnitArchetypeService;
 import SKAZA.core.service.UnitService;
 import junit.framework.TestCase;
 
-public class FightCalculatorTest extends TestCase {
+public class FightCalculatorTest {
 	
+	@Test
     public void testCalculateTotalDamage(){
     	UnitArchetype halberdier = UnitArchetypeService.createHalberdier();
     	Unit attackingUnit = UnitService.createUnit(Nation.CARTHAGE, halberdier);

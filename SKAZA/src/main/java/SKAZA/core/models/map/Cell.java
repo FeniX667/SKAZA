@@ -6,6 +6,6 @@ public class Cell {
 	public Unit unit;
 	public Coordinates coordinates;
 	public Cell[] neighbours;
-	public Byte numberOfNeighbours;
+	public Integer numberOfNeighbours;
 
 }

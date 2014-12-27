@@ -1,5 +1,6 @@
 package SKAZA.core.service;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import SKAZA.core.models.unit.Nation;
@@ -31,11 +32,11 @@ public class UnitService {
 	}
 
 	private static Unit setBasicStatistics(Unit unit, Nation nation) {
-		unit.setNrOfSoldiers( new Integer(0) );
+		unit.setNrOfSoldiers( new Integer(200) );
 		unit.setState( UnitState.IDLE );
 		unit.setOrientation( UnitOrientation.NORTH );
 		unit.setDistanceTravelled( new Integer(0) );
-		unit.setMorale( new Integer(0) );
+		unit.setMorale( new Integer(5) );
 		unit.setNation(nation);
 		
 		return unit;

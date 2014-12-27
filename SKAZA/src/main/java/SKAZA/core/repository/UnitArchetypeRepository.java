@@ -20,6 +20,13 @@ public class UnitArchetypeRepository {
     
 	public static ObservableList<UnitArchetype> archetypeData = FXCollections.observableArrayList();
 	
+	public static void initialize(){
+        File file = UnitArchetypeRepository.getUnitArchetypeFilePath();
+        if (file != null) {
+        	UnitArchetypeRepository.loadUnitArchetypeDataFromFile(file);
+        }
+	}
+	
     public static void loadUnitArchetypeDataFromFile(File file) {
         try {
             JAXBContext context = JAXBContext

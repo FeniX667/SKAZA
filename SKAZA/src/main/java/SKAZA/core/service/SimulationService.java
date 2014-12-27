@@ -16,23 +16,21 @@ public class SimulationService {
 
 	public static void setArmiesOnMap(Map map, ArrayList<Unit> unitsOfRome,
 			ArrayList<Unit> unitsOfCarthage) {
-		
+	
 		for( int i=0 ; i < unitsOfRome.size() ; i++ ){
 			map.matrix[i][0].unit = unitsOfRome.get(i);
 		}
 		
 		for( int i=0 ; i < unitsOfCarthage.size() ; i++ ){
-			map.matrix[i][map.lastRow].unit = unitsOfCarthage.get(i);
+			map.matrix[i][1].unit = unitsOfCarthage.get(i);
 		}
 	}
 
-	
-	
 	public static void checkFightsOnMap(Map map) {
 		for( int h=0 ; h < map.height ; h++ ){
 			for( int w=0 ; w < map.width ; w++ ){
 				if( map.matrix[h][w].unit!=null ){
-					checkFightInCell(map.matrix[h][w]);
+					checkFightInCell( map.matrix[h][w] );
 				}
 			}
 		}
@@ -41,6 +39,7 @@ public class SimulationService {
 	private static void checkFightInCell(Cell current) {
 		Unit defender = current.unit;
 		Unit attacker;
+		
 		for( int k=0 ; k < current.numberOfNeighbours ; k++ ){
 			if( current.neighbours[k].unit != null ){
 				attacker = current.neighbours[k].unit;							
@@ -54,7 +53,7 @@ public class SimulationService {
 		}
 	}
 	
-	private static boolean isUnitUnderAttack(Unit attacker, Unit defender) {
+	public static boolean isUnitUnderAttack(Unit attacker, Unit defender) {
 		if( attacker.getState() == UnitState.FIGTHING && attacker.getFightingWith().equals(defender) ){
 			return true;
 		}
