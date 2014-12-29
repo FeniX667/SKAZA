@@ -27,7 +27,6 @@ public class UnitServiceTest {
 		assertNotNull(unit.getDistanceTravelled());
 		assertNotNull(unit.getNation());
 		assertNotNull(unit.getNrOfSoldiers());
-		assertNotNull(unit.getOrientation());
 		assertNotNull(unit.getState());
 	}
 }

@@ -2,6 +2,7 @@ package SKAZA.core.models.unit;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import SKAZA.core.models.map.Cell;
 import SKAZA.core.models.unitArchetype.UnitArchetype;
 
 
@@ -10,9 +11,8 @@ public class Unit{
 	private IntegerProperty nrOfSoldiers;
 	private IntegerProperty distanceTravelled;
 	private IntegerProperty morale;
-	private Unit fightingWith;
+	private Cell destination;
 	UnitState state;
-	UnitOrientation orientation;
 	Nation nation;
 	
 	public Unit(){
@@ -32,12 +32,6 @@ public class Unit{
 	}
 	public void setState(UnitState state) {
 		this.state = state;
-	}
-	public UnitOrientation getOrientation() {
-		return orientation;
-	}
-	public void setOrientation(UnitOrientation orientation) {
-		this.orientation = orientation;
 	}
 	public Nation getNation() {
 		return nation;
@@ -73,12 +67,12 @@ public class Unit{
 		this.moraleProperty().set(morale);
 	}
 
-	public Unit getFightingWith() {
-		return fightingWith;
+	public Cell getDestination() {
+		return destination;
 	}
 
-	public void setFightingWith(Unit fightingWith) {
-		this.fightingWith = fightingWith;
+	public void setDestination(Cell destination) {
+		this.destination = destination;
 	}
 	
 	

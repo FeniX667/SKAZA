@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import SKAZA.core.models.unit.Nation;
-import SKAZA.core.models.unit.UnitOrientation;
 import SKAZA.core.models.unit.Unit;
 import SKAZA.core.models.unit.UnitState;
 import SKAZA.core.models.unitArchetype.UnitArchetype;
@@ -34,7 +33,6 @@ public class UnitService {
 	private static Unit setBasicStatistics(Unit unit, Nation nation) {
 		unit.setNrOfSoldiers( new Integer(200) );
 		unit.setState( UnitState.IDLE );
-		unit.setOrientation( UnitOrientation.NORTH );
 		unit.setDistanceTravelled( new Integer(0) );
 		unit.setMorale( new Integer(5) );
 		unit.setNation(nation);
