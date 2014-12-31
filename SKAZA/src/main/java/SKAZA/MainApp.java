@@ -11,7 +11,9 @@ import javax.xml.bind.Unmarshaller;
 
 import org.controlsfx.dialog.Dialogs;
 
-import SKAZA.core.SimulationEngineThread;
+import SKAZA.ai.AI;
+import SKAZA.core.SimulationEngine;
+import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unitArchetype.UnitArchetype;
 import SKAZA.core.models.unitArchetype.UnitArchetypeListWrapper;
 import SKAZA.core.repository.UnitArchetypeRepository;
@@ -22,6 +24,7 @@ import SKAZA.view.unitArchetype.UnitArchetypeEditDialogController;
 import SKAZA.view.unitArchetype.UnitArchetypeNewDialogController;
 import SKAZA.view.unitArchetype.UnitArchetypeOverviewController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +41,17 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private TabPane rootLayout;
-    private SimulationEngineThread mainSimulationEngineThread;
+    
+    private Thread mainSimulation;		
+	private SimulationEngine simulationEngine;
+	
+	private AI scipio;
+	private AI hannibal;
+	private Thread scipioThread;
+	private Thread hannibalThread;
+	
+	private SimulationOverviewController mapController;
+	private Thread repainter;
 
 	public MainApp() {
     }
@@ -49,19 +62,35 @@ public class MainApp extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("SKAZA/SCAR 0.1");
 		this.primaryStage.getIcons().add(new Image("file:resources/images/SkazaIcon1.png"));
+				
 		initRepositories();
 		initSimulation();
+		initAI();
 		initRootLayout();
-        
+		
+		mapController.timer.start();
     }
 
 	private void initRepositories() {
         UnitArchetypeRepository.initialize();
 	}
 
-	private void initSimulation() {
-    	mainSimulationEngineThread = new SimulationEngineThread();  	 
-    	//mainSimulationEngineThread.threadController.start();
+	private void initSimulation() {	
+		simulationEngine = new SimulationEngine();
+
+		Runnable simulationIteration = () -> { simulationEngine.run(); };		
+		mainSimulation = new Thread(simulationIteration);
+	}
+
+	private void initAI() {
+		scipio = new AI( simulationEngine.orderListForRome, simulationEngine.orderOfRome, Nation.ROME );
+		hannibal = new AI( simulationEngine.orderListForCarthage,  simulationEngine.orderOfCarthage,  Nation.CARTHAGE );
+
+		Runnable scipioThinking = () -> { scipio.run(); };		
+		Runnable hannibalThinking = () -> { hannibal.run(); };		
+		scipioThread = new Thread(scipioThinking);
+		hannibalThread = new Thread(hannibalThinking);
+		
 	}
 
 	public void initRootLayout() {
@@ -84,8 +113,7 @@ public class MainApp extends Application {
 		showSimulationOverview();
 		showUnitArchetypeOverview();
     }
-
-    
+ 
     private void showSimulationOverview() {
         try {	
             FXMLLoader loader = new FXMLLoader();
@@ -94,9 +122,10 @@ public class MainApp extends Application {
 
             rootLayout.getTabs().get(0).setContent(simulationOverview);
             
-            SimulationOverviewController controller = loader.getController();
-            controller.setMainApp(this);
-            controller.printUnits();
+            mapController = loader.getController();
+            mapController.setMainApp(this);
+            mapController.printUnits();
+                       
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -175,16 +204,40 @@ public class MainApp extends Application {
         }
     }
 
+    public void repaint(){
+    	mapController.printUnits();
+    }
     
     public Stage getPrimaryStage() {
         return primaryStage;
     }    
-
-	public SimulationEngineThread getMainSimulationEngineThread() {
-		return mainSimulationEngineThread;
-	}
     
-    public static void main(String[] args) {
+    
+	public Thread getMainSimulation() {
+		return mainSimulation;
+	}
+
+	public SimulationEngine getSimulationEngine() {
+		return simulationEngine;
+	}
+
+	public AI getScipio() {
+		return scipio;
+	}
+
+	public AI getHannibal() {
+		return hannibal;
+	}
+
+	public Thread getScipioThread() {
+		return scipioThread;
+	}
+
+	public Thread getHannibalThread() {
+		return hannibalThread;
+	}
+
+	public static void main(String[] args) {
         launch(args);
         System.exit(0);
     }

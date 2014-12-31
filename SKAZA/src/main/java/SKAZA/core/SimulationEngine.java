@@ -1,31 +1,27 @@
 package SKAZA.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-
-import javax.inject.Inject;
+import java.util.LinkedList;
+import java.util.List;
 
 import SKAZA.core.models.map.Map;
 import SKAZA.core.models.order.Order;
 import SKAZA.core.models.unit.Unit;
-import SKAZA.core.models.unit.Nation;
-import SKAZA.core.models.unit.UnitState;
-import SKAZA.core.service.MapService;
 import SKAZA.core.service.SimulationEngineService;
-import SKAZA.core.service.UnitService;
 
 public class SimulationEngine {
 	public Map map;
 	
 	public ArrayList<Unit> unitsOfRome;
 	public ArrayList<Unit> unitsOfCarthage;
-	public ArrayList<Order> orderListForRome;
-	public ArrayList<Order> orderListForCarthage;
+	public List<Order> orderListForRome;
+	public List<Order> orderListForCarthage;
 	public Order orderOfRome;
 	public Order orderOfCarthage;
 	
 	public Integer iteration;
+	public Long speedLimiter;
+	
 	public SimulationStatistics statistics;
 	public Boolean endingFlag;
 
@@ -33,21 +29,37 @@ public class SimulationEngine {
 		SimulationEngineService.initializeVariables(this);
 		SimulationEngineService.setArmiesOnMap(map, unitsOfRome, unitsOfCarthage);	
 		SimulationEngineService.prepareOrderLists(this);
+		System.out.println(orderOfRome);
+		System.out.println(orderOfCarthage);
 	}
 
-	public void start() {
+	public void run() {
 		while( !endingFlag ){
-			System.out.println("Koniec");
 			iterate();
+			
+			System.out.println(unitsOfRome.get(0));
+			System.out.println(unitsOfCarthage.get(0));
+
+			/*System.out.println(orderOfRome);
+			System.out.println(orderListForRome);
+			System.out.println(orderOfCarthage);
+			System.out.println(orderListForCarthage);*/
+			
+			if( speedLimiter > 0){
+				try {
+					Thread.sleep(speedLimiter);
+				} catch (InterruptedException e) {continue;	}				
+			}
 		}
 	}
 
 	private void iterate() {
 		SimulationEngineService.resolveFightsOnMap(map);
-		SimulationEngineService.moveUnits(map); //MOVING -  po prostu dla jednostek dodajemy ruchy i je rozpatrujemy. Listę jednostek można sortować wg szybkości
+		SimulationEngineService.moveUnits(map);		
 		SimulationEngineService.applyNewOrders(map, orderOfRome, orderOfCarthage);
 		SimulationEngineService.prepareOrderLists(this);
-		SimulationEngineService.checkIfCompleted(this);
+		//SimulationEngineService.checkIfCompleted(this);
+		iteration++;
 	}
 
 	public SimulationStatistics getStatistics() {

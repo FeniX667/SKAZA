@@ -1,6 +1,9 @@
 package SKAZA.core.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import SKAZA.core.SimulationEngine;
 import SKAZA.core.SimulationStatistics;
@@ -21,12 +24,14 @@ public class SimulationEngineService {
 		
 		simulationEngine.unitsOfRome = UnitService.createArmy(Nation.ROME);
 		simulationEngine.unitsOfCarthage = UnitService.createArmy(Nation.CARTHAGE);
-		simulationEngine.orderListForRome = new ArrayList<Order>();
-		simulationEngine.orderListForCarthage = new ArrayList<Order>();
-		simulationEngine.orderOfRome = null;
-		simulationEngine.orderOfCarthage = null;
+		simulationEngine.orderListForRome =  Collections.synchronizedList( new LinkedList<Order>() );
+		simulationEngine.orderListForCarthage = Collections.synchronizedList( new LinkedList<Order>() );
+		simulationEngine.orderOfRome = new Order( CellService.createCell(0, 0, 0), CellService.createCell(0, 1, 1));
+		simulationEngine.orderOfCarthage = new Order( CellService.createCell(1, 1, 0), CellService.createCell(0, 0, 0));
 		
 		simulationEngine.iteration = new Integer(0);
+		simulationEngine.speedLimiter = new Long(0);
+		
 		simulationEngine.statistics = new SimulationStatistics();
 		simulationEngine.endingFlag = new Boolean(false);	
 	}
@@ -39,19 +44,22 @@ public class SimulationEngineService {
 		}
 		
 		for( int i=0 ; i < unitsOfCarthage.size() ; i++ ){
-			map.matrix[i][1].unit = unitsOfCarthage.get(i);
+			map.matrix[i][10].unit = unitsOfCarthage.get(i);
 		}
 	}
 
-	public static void prepareOrderLists(SimulationEngine simulationEngine) {
-		Runnable orderMakerForRome = () -> { simulationEngine.orderListForRome = generateOrderList(simulationEngine.map, Nation.ROME);};
-		Runnable orderMakerForCarthage = () -> { simulationEngine.orderListForCarthage = generateOrderList(simulationEngine.map, Nation.CARTHAGE);};
+	public static void prepareOrderLists(SimulationEngine simulationEngine) {	
+		simulationEngine.orderListForRome.clear();
+		simulationEngine.orderListForCarthage.clear();
+		
+		Runnable orderMakerForRome = () -> { generateOrderList(simulationEngine.map, simulationEngine.orderListForRome, Nation.ROME);};
+		Runnable orderMakerForCarthage = () -> { generateOrderList(simulationEngine.map, simulationEngine.orderListForCarthage, Nation.CARTHAGE);};
 		
 		Thread r = new Thread(orderMakerForRome);
-		Thread c= new Thread(orderMakerForCarthage);
+		Thread c = new Thread(orderMakerForCarthage);
 		
 		r.start();
-		c.start();
+		c.start(); 
 		
 		try {
 			r.join();
@@ -62,8 +70,7 @@ public class SimulationEngineService {
 		
 	}
 
-	public static ArrayList<Order> generateOrderList(Map map, Nation nation) {
-		ArrayList<Order> orderList = new ArrayList<Order>();
+	public static void generateOrderList(Map map, List<Order> orderListForRome , Nation nation) {
 		for( int h=0 ; h < map.height ; h++ ){
 			for( int w=0 ; w < map.width ; w++ ){
 				if( isCellAbleToTakeOrder(map.matrix[h][w], nation) ){
@@ -71,14 +78,12 @@ public class SimulationEngineService {
 
 					for( int i=0 ; i < orderTaker.numberOfNeighbours ; i++){
 						if( isNeighbourPossibleDestination(orderTaker.neighbours[i], nation) ){					
-							orderList.add( new Order(orderTaker, orderTaker.neighbours[i]) );
+							orderListForRome.add( new Order(orderTaker, orderTaker.neighbours[i]) );
 						}
 					}
 				}
 			}
 		}
-		
-		return orderList;
 	}
 	
 	private static boolean isCellAbleToTakeOrder(Cell cell, Nation nation) {
@@ -117,6 +122,15 @@ public class SimulationEngineService {
 
 				if( isUnitUnderAttack(attacker, defender) ){	
 					applyDamage( defender, FightCalculator.calculateTotalDamage(attacker, defender) );
+				}
+			}
+		}
+		
+		for( int k=0 ; k < current.numberOfNeighbours ; k++ ){
+			if( current.neighbours[k].unit != null ){
+				attacker = current.neighbours[k].unit;							
+
+				if( isUnitUnderAttack(attacker, defender) ){	
 					checkCellStatusAfterFight( current );
 					checkNeighbourStatusAfterFight( current, current.neighbours[k] );
 				}
@@ -141,7 +155,7 @@ public class SimulationEngineService {
 	private static void checkCellStatusAfterFight(Cell current) {
 		Unit defender = current.unit;
 		
-		if( defender.getNrOfSoldiers()<0 ){
+		if( defender.getNrOfSoldiers() <= 0 ){
 			defender.setState(UnitState.DEAD);
 		}
 		else if( defender.getMorale() <= 0 ){
@@ -152,6 +166,7 @@ public class SimulationEngineService {
 	private static void checkNeighbourStatusAfterFight(Cell current, Cell neighbour) {
 		if( current.unit.getState() == UnitState.DEAD || current.unit.getState() == UnitState.FLEEING ){
 			Unit attacker = neighbour.unit;
+			current.unit=null;
 			attacker.setState( UnitState.MOVING );
 		}
 	}
@@ -178,27 +193,25 @@ public class SimulationEngineService {
 						if( destination.unit == null ){
 							destination.unit = mover;
 							current.unit=null;
-							mover.setDistanceTravelled( mover.getDistanceTravelled() - MapConstants.distance);
+							setMoverIdle(mover);
 						}
 						else if( destination.unit != null && destination.unit.getNation() != mover.getNation() ){
 							Unit defender = mover.getDestination().unit;
 							
 							mover.setState( UnitState.FIGTHING );
 							defender.setState( UnitState.FIGTHING );
+							defender.setDestination(current);
 							
 						}
 						else if( destination.unit != null && destination.unit.getNation() == mover.getNation() ){
-							mover.setState( UnitState.IDLE );
-							mover.setDestination( null );
-							mover.setDistanceTravelled( mover.getDistanceTravelled() - MapConstants.distance);
-						}
-						
+							setMoverIdle(mover);
+						}						
 					}
 				}
 			}
 		}
 	}
-	
+
 	private static boolean checkIfCellMayMove(Cell cell) {
 		if( cell.unit!=null && (cell.unit.getState() == UnitState.MOVING || cell.unit.getState() == UnitState.FLEEING) ){
 			return true;
@@ -206,38 +219,43 @@ public class SimulationEngineService {
 		return false;
 	}
 
+	private static void setMoverIdle(Unit mover) {
+		mover.setState( UnitState.IDLE );
+		mover.setDestination( null );
+		mover.setDistanceTravelled( mover.getDistanceTravelled() - MapConstants.distance);
+	}
 	
 	
-	
-	public static void applyNewOrders(Map map, Order orderOfRome, Order orderOfCarthage) {
-		if( orderOfRome!=null )
+
+	public static void applyNewOrders(Map map, Order orderOfRome, Order orderOfCarthage) {		
+		if( orderOfRome != null && !orderOfRome.done  )
 			setOrder(map, orderOfRome, Nation.ROME);
 		
-		if( orderOfCarthage!=null )
+		if( orderOfCarthage != null && !orderOfCarthage.done )
 			setOrder(map, orderOfCarthage, Nation.CARTHAGE);
 	}
 
 	private static void setOrder(Map map, Order order, Nation nation) {
 		Cell current = map.matrix[order.from.x][order.from.y];
 		Cell destination = map.matrix[order.to.x][order.to.y];
-		
+				
 		if( current.unit!=null && current.unit.getNation()==nation && current.unit.getState()==UnitState.IDLE ){
 			current.unit.setState(UnitState.MOVING);
 			current.unit.setDestination(destination);
 		}
 		
-		order=null;
+		order.done=true;
 	}
 	
 	
 
-	public static void checkIfCompleted(SimulationEngine simulationEngine) {
-		simulationEngine.endingFlag = UnitService.isArmyDefeated( simulationEngine.unitsOfCarthage );
+	public static boolean checkIfCompleted(SimulationEngine simulationEngine) {
 		
-		if( simulationEngine.endingFlag==true)
-			return;
-		
-		simulationEngine.endingFlag = UnitService.isArmyDefeated( simulationEngine.unitsOfRome );
+		if( simulationEngine.endingFlag = UnitService.isArmyDefeated( simulationEngine.unitsOfCarthage ) )
+			return true;
+		else{
+			return simulationEngine.endingFlag = UnitService.isArmyDefeated( simulationEngine.unitsOfRome );
+		}
 	}
 
 

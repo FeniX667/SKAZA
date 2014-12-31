@@ -7,10 +7,10 @@ import SKAZA.core.models.map.Map;
 public class MapService {
 	public static Map createMap(){
 		Map map = new Map();
-		map.height = new Integer (MapConstants.gridHeight);
-		map.width = new Integer (MapConstants.gridWidth);
-		map.lastRow = new Integer (MapConstants.gridHeight-1);
-		map.lastColumn = new Integer (MapConstants.gridWidth-1);
+		map.height = MapConstants.gridHeight;
+		map.width = MapConstants.gridWidth;
+		map.lastRow = MapConstants.gridHeight-1;
+		map.lastColumn = MapConstants.gridWidth-1;
 		
 		map.matrix = new Cell[map.height][map.width];		
 		initializeMatrixCells(map);

@@ -21,6 +21,13 @@ public class Unit{
 		morale = new SimpleIntegerProperty();
 	}
 	
+	@Override
+	public String toString(){
+		if( destination != null)
+			return new String( nation+ " " +archetype.getName()+ " " +nrOfSoldiers.intValue()+ " " +state+ " " +destination.coordinates+ " " +distanceTravelled.intValue());
+		return new String( nation+ " " +archetype.getName()+ " " +nrOfSoldiers.intValue()+ " " +state+ " " +distanceTravelled.intValue());
+	}
+	
 	public UnitArchetype getArchetype() {
 		return archetype;
 	}

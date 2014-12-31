@@ -45,7 +45,7 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		assertEquals(2, se.orderListForRome.size() );
-		assertEquals(5, se.orderListForCarthage.size() );
+		assertEquals(3, se.orderListForCarthage.size() );
 	}
 	 
 	@Test
@@ -97,8 +97,8 @@ public class SimulationEngineServiceTest {
 		roman.setDistanceTravelled(100);
 		SimulationEngineService.moveUnits(se.map);
 
-		assertEquals( UnitState.FIGTHING, roman.getState() );
-		assertEquals( UnitState.FIGTHING, roman.getDestination().unit.getState() );
+		assertEquals( UnitState.IDLE, roman.getState() );
+		assertTrue( se.map.matrix[0][1].unit.equals(roman));
 	}
 	
 	@Test
@@ -108,7 +108,7 @@ public class SimulationEngineServiceTest {
 		Unit roman = se.unitsOfRome.get(0);
 		Unit carthaginian = se.unitsOfCarthage.get(0);
 		
-		roman.setDestination( se.map.matrix[0][1] );
+		roman.setDestination( se.map.matrix[0][10] );
 		roman.setState(UnitState.FIGTHING);
 	
 		carthaginian.setDestination( se.map.matrix[0][0] );
