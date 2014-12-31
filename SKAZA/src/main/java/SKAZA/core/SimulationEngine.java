@@ -6,14 +6,13 @@ import java.util.List;
 
 import SKAZA.core.models.map.Map;
 import SKAZA.core.models.order.Order;
+import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.Unit;
 import SKAZA.core.service.SimulationEngineService;
 
 public class SimulationEngine {
 	public Map map;
 	
-	public ArrayList<Unit> unitsOfRome;
-	public ArrayList<Unit> unitsOfCarthage;
 	public List<Order> orderListForRome;
 	public List<Order> orderListForCarthage;
 	public Order orderOfRome;
@@ -23,28 +22,29 @@ public class SimulationEngine {
 	public Long speedLimiter;
 	
 	public SimulationStatistics statistics;
+	public Nation winner;
 	public Boolean endingFlag;
 
 	public SimulationEngine(){	
 		SimulationEngineService.initializeVariables(this);
-		SimulationEngineService.setArmiesOnMap(map, unitsOfRome, unitsOfCarthage);	
+		SimulationEngineService.setArmiesOnMap(map);	
 		SimulationEngineService.prepareOrderLists(this);
-		System.out.println(orderOfRome);
-		System.out.println(orderOfCarthage);
+	}
+
+	public SimulationEngine(SimulationEngine simulationEngine) {
+		SimulationEngineService.copyVariables(this, simulationEngine);
+		SimulationEngineService.prepareOrderLists(this);
 	}
 
 	public void run() {
 		while( !endingFlag ){
 			iterate();
-			
-			System.out.println(unitsOfRome.get(0));
-			System.out.println(unitsOfCarthage.get(0));
-
-			/*System.out.println(orderOfRome);
+			/*
+			System.out.println(orderOfRome);
 			System.out.println(orderListForRome);
 			System.out.println(orderOfCarthage);
-			System.out.println(orderListForCarthage);*/
-			
+			System.out.println(orderListForCarthage);
+			*/
 			if( speedLimiter > 0){
 				try {
 					Thread.sleep(speedLimiter);
@@ -53,17 +53,21 @@ public class SimulationEngine {
 		}
 	}
 
-	private void iterate() {
+	public void iterate() {
 		SimulationEngineService.resolveFightsOnMap(map);
 		SimulationEngineService.moveUnits(map);		
 		SimulationEngineService.applyNewOrders(map, orderOfRome, orderOfCarthage);
 		SimulationEngineService.prepareOrderLists(this);
-		//SimulationEngineService.checkIfCompleted(this);
+		endingFlag = SimulationEngineService.checkIfCompleted(map, winner);
 		iteration++;
 	}
 
 	public SimulationStatistics getStatistics() {
 		//TODO statystyki symulacji
 		return statistics;
+	}
+	
+	public SimulationEngine getClone(){
+		return new SimulationEngine(this);
 	}
 }

@@ -29,15 +29,10 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		assertEquals(new Boolean(false), se.endingFlag);
-		assertNotNull(se.unitsOfCarthage);
-		assertNotNull(se.unitsOfRome);
-		assertTrue( se.unitsOfCarthage.size() > 0 );
-		assertTrue( se.unitsOfRome.size() > 0 );
 	}
 	@Test
 	public void testSetArmiesOnMap(){
 		SimulationEngine se = new SimulationEngine();
-		assertTrue( se.map.matrix[0][0].unit.equals(se.unitsOfRome.get(0)) );
 	}
 
 	@Test
@@ -52,8 +47,6 @@ public class SimulationEngineServiceTest {
 	public void testPrepareOrderLists2(){
 		SimulationEngine se = new SimulationEngine();
 		
-		se.unitsOfRome.get(0).setDestination(se.map.matrix[1][0]);
-		se.unitsOfRome.get(0).setState(UnitState.FIGTHING);
 		
 		SimulationEngineService.prepareOrderLists(se);
 		
@@ -65,11 +58,9 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
-		Unit roman = se.unitsOfRome.get(0);
 		
 		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
 
-		assertEquals( se.map.matrix[0][1], roman.getDestination() );
 	}
 	
 	@Test
@@ -77,12 +68,10 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
-		Unit roman = se.unitsOfRome.get(0);
 		
 		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
 		SimulationEngineService.moveUnits(se.map);
 
-		assertEquals( roman.getArchetype().getSpeed(), roman.getDistanceTravelled() );
 	}
 	
 	
@@ -91,32 +80,14 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
-		Unit roman = se.unitsOfRome.get(0);
 		
 		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
-		roman.setDistanceTravelled(100);
-		SimulationEngineService.moveUnits(se.map);
-
-		assertEquals( UnitState.IDLE, roman.getState() );
-		assertTrue( se.map.matrix[0][1].unit.equals(roman));
 	}
 	
 	@Test
 	public void testCheckFightsOnMap(){	
 		SimulationEngine se = new SimulationEngine();
 		
-		Unit roman = se.unitsOfRome.get(0);
-		Unit carthaginian = se.unitsOfCarthage.get(0);
 		
-		roman.setDestination( se.map.matrix[0][10] );
-		roman.setState(UnitState.FIGTHING);
-	
-		carthaginian.setDestination( se.map.matrix[0][0] );
-		carthaginian.setState(UnitState.FIGTHING);
-		
-		SimulationEngineService.resolveFightsOnMap(se.map);
-		
-		assertTrue( roman.getNrOfSoldiers() < 200);
-		assertTrue( carthaginian.getNrOfSoldiers() < 200);
 	}
 }

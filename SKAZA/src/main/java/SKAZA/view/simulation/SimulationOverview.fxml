@@ -37,19 +37,19 @@
                </children></AnchorPane>
             <HBox>
                <children>
-                  <SplitPane dividerPositions="0.45819397993311034" prefHeight="42.0" prefWidth="301.0">
+                  <SplitPane dividerPositions="0.45819397993311034">
                      <items>
                         <ToggleButton fx:id="startStopButton" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="147.0" text="Start" />
-                        <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="38.0" prefWidth="135.0">
                           <items>
                             <AnchorPane>
                                  <children>
-                                    <Label fx:id="speedLabel" layoutX="47.0" text="Delay:  0" />
+                                    <Label fx:id="speedLabel" layoutX="54.0" text="Delay:  0" />
                                  </children>
                               </AnchorPane>
                             <AnchorPane>
                                  <children>
-                                    <Slider fx:id="speedSlider" layoutX="10.0" layoutY="2.0" max="1000.0" nodeOrientation="RIGHT_TO_LEFT" />
+                                    <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="161.0" layoutY="2.0" max="30.0" nodeOrientation="RIGHT_TO_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
                                  </children>
                               </AnchorPane>
                           </items>

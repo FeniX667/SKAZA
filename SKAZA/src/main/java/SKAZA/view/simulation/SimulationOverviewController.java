@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import SKAZA.MainApp;
 import SKAZA.core.math.constants.MapConstants;
 import SKAZA.core.models.map.Map;
+import SKAZA.core.models.unit.Nation;
+import SKAZA.core.models.unit.Unit;
 
 @SuppressWarnings("deprecation")
 public class SimulationOverviewController {
@@ -45,7 +47,7 @@ public class SimulationOverviewController {
 		drawShapes(gc);
 		
 		speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-		    mainApp.getSimulationEngine().speedLimiter = (long) speedSlider.getValue() ;
+		    mainApp.getSimulationEngine().speedLimiter = (long) Math.pow( speedSlider.getValue(), 2);
 		    speedLabel.setText("Delay: "+ mainApp.getSimulationEngine().speedLimiter +"ms" );
 		});
 		
@@ -111,23 +113,36 @@ public class SimulationOverviewController {
     	for( int h=0 ; h < map.height ; h++ ){
     		for( int w=0 ; w < map.width ; w++ ){
     			if( map.matrix[h][w].unit != null ){
-    				if( w % 2 == 0 ){
-    	        		gc.drawImage( new Image( "file:resources/images/footman.jpg" ), w*40 + 10, h*40 + 10, 20, 20);    			    	
-    				}
-    				else{
-    	        		gc.drawImage( new Image( "file:resources/images/footman.jpg" ), w*40 + 10, h*40 + 30, 20, 20);
-    				}
+    				drawFootman(w, h, gc, map.matrix[h][w].unit);
     			}
     			else{
-    				if( w % 2 == 0 ){
-        				gc.clearRect( w*40 + 10, h*40 + 10, 20, 20 );    			    	
-    				}
-    				else{
-        				gc.clearRect( w*40 + 10, h*40 + 30, 20, 20 );
-    				}
+    				clear(w, h, gc);
     			}   				
     		}
     	}
+    }
+    
+    private void drawFootman(int w, int h, GraphicsContext gc, Unit unit){
+		if( w % 2 == 0 ){
+			if( unit.getNation() == Nation.ROME )
+				gc.drawImage( new Image( "file:resources/images/romanFootman.jpg" ), w*40 + 10, h*40 + 10, 20, 20);
+			else
+				gc.drawImage( new Image( "file:resources/images/carthaginianFootman.jpg" ), w*40 + 10, h*40 + 10, 20, 20);				
+		}
+		else{
+			if( unit.getNation() == Nation.ROME )
+				gc.drawImage( new Image( "file:resources/images/romanFootman.jpg" ), w*40 + 10, h*40 + 30, 20, 20);
+			else
+				gc.drawImage( new Image( "file:resources/images/carthaginianFootman.jpg" ), w*40 + 10, h*40 + 30, 20, 20);
+		}
+    }
+    private void clear(int w, int h, GraphicsContext gc){
+		if( w % 2 == 0 ){
+			gc.clearRect( w*40 + 10, h*40 + 10, 20, 20 );    			    	
+		}
+		else{
+			gc.clearRect( w*40 + 10, h*40 + 30, 20, 20 );
+		}
     }
     
     public void setMainApp(MainApp mainApp) {

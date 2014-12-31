@@ -12,6 +12,6 @@ public class MapConstants {
 	public static Integer gridHeight = 13;	//Tylko nieparzyste
 	public static Integer gridWidth = 19;	//Tylko nieparzyste
 	
-	public static Integer distance = 50;
+	public static Integer distance = 30;
 	
 }

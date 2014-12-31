@@ -205,4 +205,17 @@ public class MapService {
 		}
 	}
 
+	public static void copyMap(Map copy, Map map) {
+		for( int h=0 ; h < MapConstants.gridHeight ; h++){
+			for( int w=0 ; w < MapConstants.gridWidth; w++){
+				Cell copyCell = copy.matrix[h][w];
+				Cell originalCell = map.matrix[h][w];
+				
+				if( originalCell.unit != null ){
+					copyCell.unit = UnitService.copyUnit( originalCell.unit );
+				}
+			}
+		}
+	}
+
 }

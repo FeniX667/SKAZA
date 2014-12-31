@@ -14,9 +14,10 @@ public class UnitService {
 	public static ArrayList<Unit> createArmy(Nation nation) {
 		ArrayList<Unit> unitList = new ArrayList<Unit>();
 		
-		Unit unit = createUnit(nation, UnitArchetypeRepository.archetypeData.get(0) );
-		
-		unitList.add(unit);
+		for(int i=0 ; i<12 ; i++){
+			Unit unit = createUnit(nation, UnitArchetypeRepository.archetypeData.get(0) );		
+			unitList.add(unit);
+		}
 		
 		return unitList;
 	}
@@ -45,16 +46,18 @@ public class UnitService {
 		
 		return unit;		
 	}
+	
+	public static Unit copyUnit(Unit unit) {
 
-	public static boolean isArmyDefeated(ArrayList<Unit> unitList) {
-		boolean isDefeated = true;
+		Unit newUnit = new Unit();
+
+		newUnit = setArchetype(newUnit, unit.getArchetype());	
+		newUnit.setNrOfSoldiers( new Integer( unit.getNrOfSoldiers() ) );
+		newUnit.setState( unit.getState() );
+		newUnit.setDistanceTravelled( new Integer( unit.getDistanceTravelled() ) );
+		newUnit.setMorale( new Integer( unit.getMorale() ) );
+		newUnit.setNation( unit.getNation() );
 		
-		for( Unit unit:unitList ){
-			if( unit.getState() != UnitState.FLEEING && 
-					unit.getState() != UnitState.DEAD )
-				return false;
-		}
-		
-		return isDefeated;
+		return newUnit;
 	}
 }

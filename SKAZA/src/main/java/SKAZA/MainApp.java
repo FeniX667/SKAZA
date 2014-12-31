@@ -83,8 +83,8 @@ public class MainApp extends Application {
 	}
 
 	private void initAI() {
-		scipio = new AI( simulationEngine.orderListForRome, simulationEngine.orderOfRome, Nation.ROME );
-		hannibal = new AI( simulationEngine.orderListForCarthage,  simulationEngine.orderOfCarthage,  Nation.CARTHAGE );
+		scipio = new AI( simulationEngine, Nation.ROME );
+		hannibal = new AI( simulationEngine,  Nation.CARTHAGE );
 
 		Runnable scipioThinking = () -> { scipio.run(); };		
 		Runnable hannibalThinking = () -> { hannibal.run(); };		
