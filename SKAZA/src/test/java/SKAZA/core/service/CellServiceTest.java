@@ -15,8 +15,9 @@ public class CellServiceTest {
 	@Test
 	public void testCreateCell(){
 		Cell cell;
+		CellService cellService = new CellService();
 		
-		cell = CellService.createCell( MapConstants.numberOfUpperCornerNeighbours, 0, 0 );
+		cell = cellService.createCell( MapConstants.numberOfUpperCornerNeighbours, 0, 0 );
 		
 		assertNotNull(cell);
 		assertNotNull(cell.neighbours);

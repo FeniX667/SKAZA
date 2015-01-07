@@ -9,8 +9,9 @@ public class MapConstants {
 	public static Integer numberOfSideNeighbours = 4;
 	public static Integer numberOfNormalCellNeighbours = 6;
 	
-	public static Integer gridHeight = 13;	//Tylko nieparzyste
-	public static Integer gridWidth = 19;	//Tylko nieparzyste
+	public static Integer gridHeight = 9;	//Tylko nieparzyste
+	public static Integer gridWidth = 13;	//Tylko nieparzyste
+	public static Integer rectangleSize = 50;	//Tylko nieparzyste
 	
 	public static Integer distance = 30;
 	

@@ -3,6 +3,7 @@ package SKAZA.core.service;
 import java.io.File;
 import java.util.ArrayList;
 
+import SKAZA.core.math.constants.UnitConstants;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.Unit;
 import SKAZA.core.models.unit.UnitState;
@@ -11,28 +12,38 @@ import SKAZA.core.repository.UnitArchetypeRepository;
 
 public class UnitService {
 	
-	public static ArrayList<Unit> createArmy(Nation nation) {
+	public ArrayList<Unit> createArmy(Nation nation) {
 		ArrayList<Unit> unitList = new ArrayList<Unit>();
 		
-		for(int i=0 ; i<12 ; i++){
-			Unit unit = createUnit(nation, UnitArchetypeRepository.archetypeData.get(0) );		
-			unitList.add(unit);
+		if( nation == Nation.ROME ){
+			for(int i=0 ; i < UnitConstants.RomeArmySize ; i++){
+				Unit unit = createUnit( nation, UnitArchetypeRepository.archetypeData.get(0), 500 );		
+				unitList.add(unit);
+			}
+		}
+		
+		if( nation == Nation.CARTHAGE ){
+
+			for(int i=0 ; i < UnitConstants.CarthageArmySize ; i++){
+				Unit unit = createUnit( nation, UnitArchetypeRepository.archetypeData.get(0), 500 );		
+				unitList.add(unit);
+			}
 		}
 		
 		return unitList;
 	}
 	
-	public static Unit createUnit(Nation nation, UnitArchetype archetype){
+	public Unit createUnit(Nation nation, UnitArchetype archetype, Integer nrOfSoldiers){
 		Unit unit = new Unit();
 		
-		setBasicStatistics(unit, nation);
+		setBasicStatistics(unit, nation, nrOfSoldiers);
 		unit = setArchetype(unit, archetype);
 		
 		return unit;
 	}
 
-	private static Unit setBasicStatistics(Unit unit, Nation nation) {
-		unit.setNrOfSoldiers( new Integer(200) );
+	private Unit setBasicStatistics(Unit unit, Nation nation, Integer nrOfSoldiers) {
+		unit.setNrOfSoldiers( new Integer(nrOfSoldiers) );
 		unit.setState( UnitState.IDLE );
 		unit.setDistanceTravelled( new Integer(0) );
 		unit.setMorale( new Integer(5) );
@@ -41,13 +52,13 @@ public class UnitService {
 		return unit;
 	}
 
-	private static Unit setArchetype(Unit unit, UnitArchetype archetype) {
+	private Unit setArchetype(Unit unit, UnitArchetype archetype) {
 		unit.setArchetype( archetype);
 		
 		return unit;		
 	}
 	
-	public static Unit copyUnit(Unit unit) {
+	public Unit copyUnit(Unit unit) {
 
 		Unit newUnit = new Unit();
 
@@ -59,5 +70,9 @@ public class UnitService {
 		newUnit.setNation( unit.getNation() );
 		
 		return newUnit;
+	}
+
+	public Double calculateStrength(Unit unit) {		
+		return new Double( ( unit.getArchetype().getAttack() + unit.getArchetype().getDefense() )* unit.getNrOfSoldiers()/100 );
 	}
 }

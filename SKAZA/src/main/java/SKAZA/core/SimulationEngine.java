@@ -8,10 +8,12 @@ import SKAZA.core.models.map.Map;
 import SKAZA.core.models.order.Order;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unit.Unit;
+import SKAZA.core.models.unitArchetype.UnitArchetype;
 import SKAZA.core.service.SimulationEngineService;
 
 public class SimulationEngine {
 	public Map map;
+	public SimulationEngineService simulationEngineService;
 	
 	public List<Order> orderListForRome;
 	public List<Order> orderListForCarthage;
@@ -21,50 +23,61 @@ public class SimulationEngine {
 	public Integer iteration;
 	public Long speedLimiter;
 	
-	public SimulationStatistics statistics;
+	public SimulationStatistics statisticsForRome;
+	public SimulationStatistics statisticsForCarthage;
 	public Nation winner;
 	public Boolean endingFlag;
 
-	public SimulationEngine(){	
-		SimulationEngineService.initializeVariables(this);
-		SimulationEngineService.setArmiesOnMap(map);	
-		SimulationEngineService.prepareOrderLists(this);
+	public SimulationEngine(){
+		simulationEngineService = new SimulationEngineService();
+		simulationEngineService.initializeVariables(this);
+		simulationEngineService.setArmiesOnMap(map);	
+		simulationEngineService.prepareOrderLists(this);
+	}
+	
+	public SimulationEngine( List<UnitArchetype> generatedArchetypes ){
+		simulationEngineService = new SimulationEngineService(generatedArchetypes);
+		simulationEngineService.initializeVariables(this);
+		simulationEngineService.setArmiesOnMap(map);	
+		simulationEngineService.prepareOrderLists(this);
 	}
 
 	public SimulationEngine(SimulationEngine simulationEngine) {
-		SimulationEngineService.copyVariables(this, simulationEngine);
-		SimulationEngineService.prepareOrderLists(this);
+		simulationEngineService = new SimulationEngineService();
+		simulationEngineService.copyVariables(this, simulationEngine);
+		simulationEngineService.prepareOrderLists(this);
 	}
 
 	public void run() {
 		while( !endingFlag ){
 			iterate();
-			/*
-			System.out.println(orderOfRome);
-			System.out.println(orderListForRome);
-			System.out.println(orderOfCarthage);
-			System.out.println(orderListForCarthage);
-			*/
 			if( speedLimiter > 0){
 				try {
 					Thread.sleep(speedLimiter);
 				} catch (InterruptedException e) {continue;	}				
 			}
 		}
+		
+		System.out.println(winner);
 	}
 
 	public void iterate() {
-		SimulationEngineService.resolveFightsOnMap(map);
-		SimulationEngineService.moveUnits(map);		
-		SimulationEngineService.applyNewOrders(map, orderOfRome, orderOfCarthage);
-		SimulationEngineService.prepareOrderLists(this);
-		endingFlag = SimulationEngineService.checkIfCompleted(map, winner);
+		simulationEngineService.resolveFightsOnMap(map);
+		simulationEngineService.moveUnits(map);		
+		simulationEngineService.applyNewOrders(map, orderOfRome, orderOfCarthage);
+		simulationEngineService.prepareOrderLists(this);
+		endingFlag = simulationEngineService.checkIfCompleted(this);
 		iteration++;
 	}
 
-	public SimulationStatistics getStatistics() {
-		//TODO statystyki symulacji
-		return statistics;
+	public SimulationStatistics getStatistics(Nation nation) {
+		if( nation ==  Nation.ROME ){			
+			return statisticsForRome = simulationEngineService.generateStatisticsFor(this, nation);
+		}
+		else if( nation == Nation.CARTHAGE ){
+			return statisticsForCarthage = simulationEngineService.generateStatisticsFor(this, nation);
+		}
+		return null;
 	}
 	
 	public SimulationEngine getClone(){

@@ -12,18 +12,39 @@ public class TreeNode {
     static Random r = new Random();
     static double epsilon = 1e-6;
 
-    TreeNode[] children;
-    Order order;
-    SimulationEngine simEngine;
-    List<Order> currentOrderList;
     Nation nation;
+    SimulationEngine simEngine;
+    
+    Order orderInNode;
+    Order enemyOrderInNode;
+    Order allyOrderInNode;
+    
+    List<Order> allyOrderList;
+    List<Order> enemyOrderList;
+    int counter = 0;
+    
+    TreeNode[] children;
     double nVisits, totValue;
 
-    public TreeNode(List<Order> currentOrderList, Order order, SimulationEngine simEngine, Nation nation) {
-    	this.currentOrderList = currentOrderList;
-    	this.order = order;
-    	this.simEngine = simEngine;
+    public TreeNode(Order orderInNode, SimulationEngine simEngine, Nation nation) {
     	this.nation = nation;
+    	
+    	if( nation == Nation.ROME ){
+        	this.orderInNode = orderInNode;
+        	this.simEngine = simEngine;
+        	this.allyOrderInNode = simEngine.orderOfRome;
+        	this.enemyOrderInNode = simEngine.orderOfCarthage;
+        	this.allyOrderList = simEngine.orderListForRome;
+        	this.enemyOrderList = simEngine.orderListForCarthage;
+    	}
+    	if( nation == Nation.CARTHAGE){
+        	this.orderInNode = orderInNode;
+        	this.simEngine = simEngine;
+        	this.allyOrderInNode = simEngine.orderOfCarthage;
+        	this.enemyOrderInNode = simEngine.orderOfRome;
+        	this.allyOrderList = simEngine.orderListForCarthage;  
+        	this.enemyOrderList = simEngine.orderListForRome;  			
+    	}
 	}
 
 	public void selectAction() {
@@ -35,13 +56,14 @@ public class TreeNode {
             current = current.select();
             visited.add(current);
         }
-        
+
         current.expand();
         
         TreeNode newNode = current.select();
         visited.add(newNode);
         
-        double value = playout(newNode);
+        double value = playout();
+        
         for (TreeNode node : visited) {
         	if( node!=null )
         		node.updateStats(value);
@@ -60,114 +82,47 @@ public class TreeNode {
                     c.totValue / (c.nVisits + epsilon) +
                             Math.sqrt(Math.log(nVisits+1) / (c.nVisits + epsilon)) +
                             r.nextDouble() * epsilon;
-            if (uctValue > bestValue) {
+            if( uctValue > bestValue ) {
                 selected = c;
                 bestValue = uctValue;
             }
         }
         return selected;
+           
     }
     
-    public void expand() {
-    	Random generator = new Random();
-        children = new TreeNode[ currentOrderList.size() ];
-        
-        for( int i=0 ; i < currentOrderList.size() ; i++ ) {
+    public void expand() {    	
+    	setAllyOrder();
+    	setRandomEnemyOrder();
+    	simEngine.iterate();
+
+    	while( allyOrderList.size()==0 ){
+    		setRandomEnemyOrder();
+    		simEngine.iterate();
+    	}
+    	
+    	children = new TreeNode[allyOrderList.size()];
+    	
+        for( int i=0 ; i < allyOrderList.size() ; i++ ) {
         	SimulationEngine simEngineCopy = simEngine.getClone();
-        	
-        	if( nation == Nation.ROME ){
-        		if( order!= null ){
-            		simEngineCopy.orderOfRome.from = order.from;
-            		simEngineCopy.orderOfRome.to = order.to;
-            		simEngineCopy.orderOfRome.done = false;			
-        		}
-        		
-        		if( simEngineCopy.orderListForCarthage.size()>0 ){
-	        		Integer randomIndex = generator.nextInt( simEngineCopy.orderListForCarthage.size() );
-	        		Order drawnOrder = simEngineCopy.orderListForCarthage.get( randomIndex );
-	        		simEngineCopy.orderOfCarthage.from = drawnOrder.from;
-	        		simEngineCopy.orderOfCarthage.to = drawnOrder.to;
-	        		simEngineCopy.orderOfCarthage.done = false;
-        		}
-        		
-        		simEngineCopy.iterate();
-        		
-            	while(simEngineCopy.orderListForRome.size() == 0){
-            		simEngineCopy.iterate();
-            		
-                	if( simEngineCopy.orderListForCarthage.size() > 0){
-                		Integer randomIndex = generator.nextInt( simEngineCopy.orderListForCarthage.size() );
-                		Order drawnOrder = simEngineCopy.orderListForCarthage.get( randomIndex );
-                		simEngineCopy.orderOfCarthage.from = drawnOrder.from;
-                		simEngineCopy.orderOfCarthage.to = drawnOrder.to;
-                		simEngineCopy.orderOfCarthage.done = false;
-                	}                	
-            	}
-            	children[i] = new TreeNode(simEngineCopy.orderListForRome, currentOrderList.get(i), simEngineCopy, nation);
-        	}       		
-        	
-        	if( nation == Nation.CARTHAGE ){
-	        	if( order!= null ){
-	        		simEngineCopy.orderOfCarthage.from = order.from;
-	        		simEngineCopy.orderOfCarthage.to = order.to;
-	        		simEngineCopy.orderOfCarthage.done = false;
-        		}
-        		
-	        	if( simEngineCopy.orderListForRome.size()>0 ){
-	        		Integer randomIndex = generator.nextInt( simEngineCopy.orderListForRome.size() );
-	        		Order drawnOrder = simEngineCopy.orderListForRome.get( randomIndex );
-	        		simEngineCopy.orderOfRome.from = drawnOrder.from;
-	        		simEngineCopy.orderOfRome.to = drawnOrder.to;
-	        		simEngineCopy.orderOfRome.done = false;
-	        	}
-        		
-        		simEngineCopy.iterate();
-        		
-            	while(simEngineCopy.orderListForCarthage.size() == 0){
-            		simEngineCopy.iterate();
-            		
-                	if( simEngineCopy.orderListForRome.size() > 0){
-                		Integer randomIndex = generator.nextInt( simEngineCopy.orderListForRome.size() );
-                		Order drawnOrder = simEngineCopy.orderListForRome.get( randomIndex );
-                		simEngineCopy.orderOfRome.from = drawnOrder.from;
-                		simEngineCopy.orderOfRome.to = drawnOrder.to;
-                		simEngineCopy.orderOfRome.done = false;
-                	}              	
-            	}
-            	children[i] = new TreeNode(simEngineCopy.orderListForCarthage, currentOrderList.get(i), simEngineCopy, nation);
-        	}
+        	children[i] = new TreeNode( allyOrderList.get(i), simEngineCopy, nation);
         }
     }
 
-    public double playout(TreeNode tn) {
-    	Random generator = new Random();
-    	System.out.println("Zaczynam playout..." + simEngine.endingFlag);
-    	
-    	while( !simEngine.endingFlag ){
-        	simEngine.iterate();
-        	
-        	if( simEngine.orderListForRome.size() > 0){
-        		Integer randomIndex = generator.nextInt( simEngine.orderListForRome.size() );
-        		Order drawnOrder = simEngine.orderListForRome.get( randomIndex );
-        		simEngine.orderOfRome.from = drawnOrder.from;
-        		simEngine.orderOfRome.to = drawnOrder.to;
-        		simEngine.orderOfRome.done = drawnOrder.done;
-        	}
-        	
-        	if( simEngine.orderListForCarthage.size() > 0){
-        		Integer randomIndex = generator.nextInt( simEngine.orderListForCarthage.size() );
-        		Order drawnOrder = simEngine.orderListForCarthage.get( randomIndex );
-        		simEngine.orderOfCarthage.from = drawnOrder.from;
-        		simEngine.orderOfCarthage.to = drawnOrder.to;
-        		simEngine.orderOfCarthage.done = drawnOrder.done;
-        	}
-        	
+	public double playout() {
+    	while( !simEngine.endingFlag && simEngine.iteration<1000 ){
+    		setRandomAllyOrder();
+    		setRandomEnemyOrder();
+    		
+    		simEngine.iterate();
+    		
     	}
-    	
-    	System.out.println("Wynik " + simEngine.winner);
-    	
+		counter++;
+    	    	
     	if( simEngine.winner == nation )
     		return 1;
+    	else if( simEngine.winner == null)
+    		return 0.5;
     	else
     		return 0;
     }
@@ -177,17 +132,31 @@ public class TreeNode {
         totValue += value;
     }
 
-	public Order getBestOrder() {
-		Order bestOrder = null;
-		double bestValue = 0;
-		for (TreeNode tn : children) {
-			Double currentValue = tn.totValue/tn.nVisits;
-			if (currentValue >= bestValue) {
-				bestValue = currentValue;
-				bestOrder = tn.order;
-			}
-	        System.out.println(currentValue+ "%");
-		}
-		return bestOrder;
+	private void setAllyOrder() {
+    	allyOrderInNode.from = orderInNode.from;
+    	allyOrderInNode.to = orderInNode.to;
+    	allyOrderInNode.done = false;
+	}
+	
+	private void setRandomAllyOrder(){
+    	if( allyOrderList.size() > 0 ){
+	    	Random generator = new Random();
+	    	
+	    	Order drawnOrder = allyOrderList.get( generator.nextInt( allyOrderList.size() ) );
+	    	allyOrderInNode.from = drawnOrder.from;
+	    	allyOrderInNode.to = drawnOrder.to;
+	    	allyOrderInNode.done = false;		
+    	}
+	}
+
+    private void setRandomEnemyOrder() {
+    	if( enemyOrderList.size() > 0 ){
+	    	Random generator = new Random();
+	    	
+	    	Order drawnOrder = enemyOrderList.get( generator.nextInt( enemyOrderList.size() ) );
+	    	enemyOrderInNode.from = drawnOrder.from;
+	    	enemyOrderInNode.to = drawnOrder.to;
+	    	enemyOrderInNode.done = false;		
+    	}
 	}
 }

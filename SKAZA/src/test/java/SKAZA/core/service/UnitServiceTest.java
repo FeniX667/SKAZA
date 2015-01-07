@@ -16,10 +16,11 @@ public class UnitServiceTest {
 	@Test
 	public void testCreateUnit(){
 		Unit unit;
+		UnitService unitService = new UnitService();
 		
 		UnitArchetype halberdier = UnitArchetypeService.createHalberdier();
 		
-		unit = UnitService.createUnit( Nation.CARTHAGE, halberdier );
+		unit = unitService.createUnit( Nation.CARTHAGE, halberdier, 200 );
 		
 		assertNotNull(unit);
 		assertNotNull(unit.getArchetype());

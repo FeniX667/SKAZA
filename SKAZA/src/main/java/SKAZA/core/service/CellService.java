@@ -5,7 +5,7 @@ import SKAZA.core.models.map.Coordinates;
 
 public class CellService {
 
-	public static Cell createCell(Integer numberOfNeighbours, int x, int y){
+	public Cell createCell(Integer numberOfNeighbours, int x, int y){
 		Cell cell = new Cell();
 		cell.numberOfNeighbours = numberOfNeighbours;
 		cell.neighbours = new Cell[cell.numberOfNeighbours];

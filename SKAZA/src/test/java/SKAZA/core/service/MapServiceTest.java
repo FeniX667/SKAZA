@@ -2,6 +2,7 @@ package SKAZA.core.service;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import SKAZA.core.math.constants.MapConstants;
@@ -11,12 +12,19 @@ import SKAZA.core.service.MapService;
 import junit.framework.TestCase;
 
 public class MapServiceTest {
+	
+	MapService mapService;
+	
+	@Before
+	public void init(){
+		mapService = new MapService();
+	}
 
 	@Test
 	public void testCreateUnit(){
 		Map map;
 		
-		map = MapService.createMap();
+		map = mapService.createMap();
 		
 		assertNotNull(map);
 		assertNotNull(map.height);
@@ -29,7 +37,7 @@ public class MapServiceTest {
 	
 	@Test
 	public void testNumberOfCellsNeighbours(){
-		Map map = MapService.createMap();
+		Map map = mapService.createMap();
 		
 		thenCornerNeighbours(map);
 		thenSideNeighbours(map);
@@ -67,7 +75,7 @@ public class MapServiceTest {
 	
 	@Test
 	public void testNeighboursInitialization(){
-		Map map = MapService.createMap();
+		Map map = mapService.createMap();
 
 		thenCornerNeighboursAreInitialized(map);
 		thenOuterBaseNeighboursAreInitialized(map);

@@ -3,6 +3,7 @@ package SKAZA;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.prefs.Preferences;
 
 import javax.xml.bind.JAXBContext;
@@ -12,16 +13,20 @@ import javax.xml.bind.Unmarshaller;
 import org.controlsfx.dialog.Dialogs;
 
 import SKAZA.ai.AI;
+import SKAZA.ai.ElapsedTimer;
 import SKAZA.core.SimulationEngine;
+import SKAZA.core.models.order.Order;
 import SKAZA.core.models.unit.Nation;
 import SKAZA.core.models.unitArchetype.UnitArchetype;
 import SKAZA.core.models.unitArchetype.UnitArchetypeListWrapper;
 import SKAZA.core.repository.UnitArchetypeRepository;
 import SKAZA.core.service.UnitArchetypeService;
+import SKAZA.genetic.Criteria;
+import SKAZA.genetic.GeneticAlgorithm;
+import SKAZA.genetic.Mutators;
 import SKAZA.view.RootLayoutController;
 import SKAZA.view.simulation.SimulationOverviewController;
 import SKAZA.view.unitArchetype.UnitArchetypeEditDialogController;
-import SKAZA.view.unitArchetype.UnitArchetypeNewDialogController;
 import SKAZA.view.unitArchetype.UnitArchetypeOverviewController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -51,7 +56,6 @@ public class MainApp extends Application {
 	private Thread hannibalThread;
 	
 	private SimulationOverviewController mapController;
-	private Thread repainter;
 
 	public MainApp() {
     }
@@ -61,12 +65,13 @@ public class MainApp extends Application {
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("SKAZA/SCAR 0.1");
-		this.primaryStage.getIcons().add(new Image("file:resources/images/SkazaIcon1.png"));
+		//this.primaryStage.getIcons().add(new Image("file:resources/images/SkazaIcon1.png"));
+		this.primaryStage.resizableProperty().set( false );
 				
 		initRepositories();
 		initSimulation();
 		initAI();
-		initRootLayout();
+		initRootLayout();	
 		
 		mapController.timer.start();
     }
@@ -81,7 +86,7 @@ public class MainApp extends Application {
 		Runnable simulationIteration = () -> { simulationEngine.run(); };		
 		mainSimulation = new Thread(simulationIteration);
 	}
-
+	
 	private void initAI() {
 		scipio = new AI( simulationEngine, Nation.ROME );
 		hannibal = new AI( simulationEngine,  Nation.CARTHAGE );
@@ -107,7 +112,7 @@ public class MainApp extends Application {
             
             primaryStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
        
 		showSimulationOverview();
@@ -147,34 +152,6 @@ public class MainApp extends Application {
         }
     }
     
-    public void showUnitArchetypeNewDialog() {
-        try {
-            // Load the fxml file and create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/unitArchetype/UnitArchetypeNewDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
-
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("New unit archetype");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-            
-            // Set the unitArchetype into the controller.
-            UnitArchetypeNewDialogController controller = loader.getController();
-            controller.setDialogStage(dialogStage);
-            controller.setMainApp(this);
-
-            // Show the dialog and wait until the user closes it
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public void showUnitArchetypeEditDialog(UnitArchetype unitArchetype) {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
@@ -202,6 +179,14 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void reset(){
+		initSimulation();
+		initAI();
+		initRootLayout();
+		
+		mapController.timer.start();
     }
 
     public void repaint(){
@@ -236,7 +221,6 @@ public class MainApp extends Application {
 	public Thread getHannibalThread() {
 		return hannibalThread;
 	}
-
 	public static void main(String[] args) {
         launch(args);
         System.exit(0);

@@ -23,19 +23,7 @@ public class RootLayoutController {
 
     @FXML
     private void handleOpen() {
-        FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-        
-        fileChooser.setInitialDirectory( new File( new String( System.getProperty("user.dir") + "/resources/datebase/archetypes"  ) ) );
-
-        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-
-        if (file != null) {
-            UnitArchetypeRepository.loadUnitArchetypeDataFromFile(file);
-        }
     }
 
     @FXML
@@ -50,23 +38,7 @@ public class RootLayoutController {
 
     @FXML
     private void handleSaveAs() {
-        FileChooser fileChooser = new FileChooser();
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        fileChooser.setInitialDirectory( new File( new String( System.getProperty("user.dir") + "/resources/datebase/archetypes"  ) ) );
-
-        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-
-        if (file != null) {
-            // Make sure it has the correct extension
-            if (!file.getPath().endsWith(".xml")) {
-                file = new File(file.getPath() + ".xml");
-            }
-            UnitArchetypeRepository.saveUnitArchetypeDataToFile(file);
-        }
     }
 
     @FXML

@@ -19,8 +19,11 @@ import SKAZA.core.repository.UnitArchetypeRepository;
 
 public class SimulationEngineServiceTest {
 	
+	SimulationEngineService simulationEngineService;
+	
 	@Before
 	public void setBackground(){
+		simulationEngineService = new SimulationEngineService();
 		UnitArchetypeRepository.initialize();
 	}
 	
@@ -48,7 +51,7 @@ public class SimulationEngineServiceTest {
 		SimulationEngine se = new SimulationEngine();
 		
 		
-		SimulationEngineService.prepareOrderLists(se);
+		simulationEngineService.prepareOrderLists(se);
 		
 		assertEquals(0, se.orderListForRome.size() );
 	}
@@ -59,7 +62,7 @@ public class SimulationEngineServiceTest {
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
 		
-		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
+		simulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
 
 	}
 	
@@ -69,8 +72,8 @@ public class SimulationEngineServiceTest {
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
 		
-		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
-		SimulationEngineService.moveUnits(se.map);
+		simulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
+		simulationEngineService.moveUnits(se.map);
 
 	}
 	
@@ -81,7 +84,7 @@ public class SimulationEngineServiceTest {
 		
 		se.orderOfRome = new Order(se.map.matrix[0][0], se.map.matrix[0][1]);
 		
-		SimulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
+		simulationEngineService.applyNewOrders(se.map, se.orderOfRome, null);
 	}
 	
 	@Test

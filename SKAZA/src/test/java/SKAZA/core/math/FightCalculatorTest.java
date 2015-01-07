@@ -18,9 +18,11 @@ public class FightCalculatorTest {
 	
 	@Test
     public void testCalculateTotalDamage(){
+		UnitService unitService = new UnitService();
+		
     	UnitArchetype halberdier = UnitArchetypeService.createHalberdier();
-    	Unit attackingUnit = UnitService.createUnit(Nation.CARTHAGE, halberdier);
-    	Unit defendingUnit = UnitService.createUnit(Nation.ROME, halberdier);
+    	Unit attackingUnit = unitService.createUnit(Nation.CARTHAGE, halberdier, 200);
+    	Unit defendingUnit = unitService.createUnit(Nation.ROME, halberdier, 200);
     	attackingUnit.setNrOfSoldiers(500);
     	defendingUnit.setNrOfSoldiers(1000);
     	

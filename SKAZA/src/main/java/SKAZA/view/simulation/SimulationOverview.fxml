@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
@@ -8,68 +11,182 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SKAZA.view.simulation.SimulationOverviewController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SKAZA.view.simulation.SimulationOverviewController">
    <children>
-      <AnchorPane prefHeight="675.0" prefWidth="200.0">
-         <children>
-            <Ellipse fill="DODGERBLUE" layoutX="100.0" layoutY="338.0" radiusX="100.0" radiusY="206.0" stroke="BLACK" strokeType="INSIDE" />
-         </children>
+      <AnchorPane minHeight="565.0" minWidth="190.0">
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </HBox.margin>
+         <children>
+            <VBox layoutX="50.0" layoutY="188.0" maxWidth="190.0" prefHeight="575.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label alignment="CENTER" minHeight="40.0" minWidth="190.0" prefHeight="30.0" prefWidth="190.0" text="ROME">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Times New Roman Bold" size="30.0" />
+                     </font></Label>
+                  <Canvas fx:id="romeCanvas" height="140.0" width="140.0">
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </VBox.margin>
+                  </Canvas>
+                  <GridPane maxHeight="135.0" minHeight="135.0" minWidth="190.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="127.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="73.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Total army size" />
+                        <Label text="Infantry size" GridPane.rowIndex="1" />
+                        <Label text="Infantry strength" GridPane.rowIndex="2" />
+                        <Label text="Cavalry size" GridPane.rowIndex="3" />
+                        <Label text="Cavalry strength" GridPane.rowIndex="4" />
+                        <Label fx:id="romeTotalArmySize" GridPane.columnIndex="1" />
+                        <Label fx:id="romeInfantrySize" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="romeInfantryStrength" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="romeCavalrySize" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="romeCavalryStrength" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+                <AnchorPane maxHeight="190.0" maxWidth="190.0" minHeight="190.0" minWidth="190.0">
+                     <children>
+                        <TextArea fx:id="romeTextField" editable="false" focusTraversable="false" maxHeight="190.0" maxWidth="190.0" minHeight="190.0" minWidth="190.0" prefHeight="168.0" prefWidth="190.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor></TextArea>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
       </AnchorPane>
-      <VBox prefWidth="800.0">
+      <AnchorPane minHeight="575.0" minWidth="650.0">
          <children>
-            <AnchorPane prefHeight="75.0" prefWidth="800.0">
+            <VBox prefHeight="525.0" prefWidth="650.0">
                <children>
-                  <ProgressBar layoutX="300.0" layoutY="29.0" prefWidth="200.0" progress="0.0" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </AnchorPane>
-            <AnchorPane prefHeight="550.0" prefWidth="800.0">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-               <children>
-                  <Canvas fx:id="mapCanvas" height="540.0" width="770.0" />
-               </children></AnchorPane>
-            <HBox>
-               <children>
-                  <SplitPane dividerPositions="0.45819397993311034">
-                     <items>
-                        <ToggleButton fx:id="startStopButton" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="147.0" text="Start" />
-                        <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="38.0" prefWidth="135.0">
-                          <items>
-                            <AnchorPane>
+                  <AnchorPane minHeight="25.0" minWidth="650.0">
+                     <children>
+                        <ProgressBar fx:id="progressBar" layoutX="225.0" layoutY="5.0" prefHeight="25.0" prefWidth="650.0" progress="0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </AnchorPane>
+                  <AnchorPane minHeight="500.0" minWidth="650.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <children>
+                        <Canvas fx:id="mapCanvas" height="500.0" onMouseClicked="#mouseListener" onMouseMoved="#cursorChanger" width="650.0">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor></Canvas>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane minHeight="50.0" minWidth="650.0">
+                     <children>
+                        <SplitPane cacheShape="false" centerShape="false" dividerPositions="0.5" focusTraversable="false" prefHeight="50.0" prefWidth="650.0" scaleShape="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <items>
+                              <HBox maxHeight="48.0" maxWidth="160.0" prefHeight="48.0" prefWidth="186.0">
                                  <children>
-                                    <Label fx:id="speedLabel" layoutX="54.0" text="Delay:  0" />
+                                    <ToggleButton fx:id="startStopButton" maxHeight="75.0" maxWidth="215.0" minHeight="25.0" minWidth="74.0" mnemonicParsing="false" onAction="#start" prefHeight="38.0" prefWidth="74.0" text="Start">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </ToggleButton>
+                                    <Button mnemonicParsing="false" onAction="#handleReset" prefHeight="58.0" prefWidth="101.0" text="Reset">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Button>
                                  </children>
-                              </AnchorPane>
-                            <AnchorPane>
-                                 <children>
-                                    <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="161.0" layoutY="2.0" max="30.0" nodeOrientation="RIGHT_TO_LEFT" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
-                                 </children>
-                              </AnchorPane>
-                          </items>
+                              </HBox>
+                              <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="48.0" prefWidth="480.0">
+                                <items>
+                                  <AnchorPane maxHeight="21.0" minHeight="21.0" prefHeight="21.0" prefWidth="376.0">
+                                       <children>
+                                          <Label fx:id="speedLabel" layoutX="180.0" layoutY="2.0" text="Delay:  25ms" />
+                                       </children>
+                                    </AnchorPane>
+                                  <AnchorPane maxHeight="21.0" prefWidth="21.0">
+                                       <children>
+                                          <Slider fx:id="speedSlider" blockIncrement="1.0" layoutX="161.0" layoutY="2.0" max="30.0" min="1.0" nodeOrientation="RIGHT_TO_LEFT" value="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </items>
+                              </SplitPane>
+                           </items>
                         </SplitPane>
-                     </items>
-                  </SplitPane>
+                     </children>
+                  </AnchorPane>
                </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </VBox.margin>
-            </HBox>
+            </VBox>
          </children>
-      </VBox>
-      <AnchorPane prefHeight="675.0" prefWidth="200.0">
-         <children>
-            <Ellipse fill="DODGERBLUE" layoutX="100.0" layoutY="338.0" radiusX="100.0" radiusY="206.0" stroke="BLACK" strokeType="INSIDE" />
-         </children>
+      </AnchorPane>
+      <AnchorPane minHeight="565.0" minWidth="190.0">
          <HBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </HBox.margin>
+         <children>
+            <VBox maxWidth="190.0" prefHeight="575.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" minHeight="40.0" minWidth="190.0" text="CARTHAGE">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Times New Roman Bold" size="30.0" />
+                     </font></Label>
+                  <Canvas fx:id="carthageCanvas" height="140.0" width="140.0">
+                     <VBox.margin>
+                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                     </VBox.margin>
+                  </Canvas>
+                  <GridPane maxHeight="135.0" minHeight="135.0" minWidth="190.0">
+                     <children>
+                        <Label text="Total army size" />
+                        <Label text="Infantry size" GridPane.rowIndex="1" />
+                        <Label text="Infantry strength" GridPane.rowIndex="2" />
+                        <Label text="Cavalry size" GridPane.rowIndex="3" />
+                        <Label text="Cavalry strength" GridPane.rowIndex="4" />
+                        <Label fx:id="carthageTotalArmySize" GridPane.columnIndex="1" />
+                        <Label fx:id="carthageInfantrySize" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="carthageInfantryStrength" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="carthageCavalrySize" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="carthageCavalryStrength" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="127.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="73.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <AnchorPane maxHeight="190.0" maxWidth="190.0" minHeight="190.0" minWidth="190.0">
+                     <children>
+                        <TextArea fx:id="carthageTextField" editable="false" focusTraversable="false" maxHeight="190.0" maxWidth="190.0" minHeight="190.0" minWidth="190.0" prefHeight="168.0" prefWidth="190.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor></TextArea>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
       </AnchorPane>
    </children>
 </HBox>

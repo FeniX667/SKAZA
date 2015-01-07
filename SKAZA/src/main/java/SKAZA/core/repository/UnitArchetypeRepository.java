@@ -1,6 +1,7 @@
 package SKAZA.core.repository;
 
 import java.io.File;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import javafx.collections.FXCollections;
@@ -28,7 +29,20 @@ public class UnitArchetypeRepository {
 	}
 	
     public static void loadUnitArchetypeDataFromFile(File file) {
-        try {
+    	try {
+            JAXBContext context = JAXBContext
+                    .newInstance(UnitArchetypeListWrapper.class);
+    		Unmarshaller um = context.createUnmarshaller();
+    		um.unmarshal(file);
+    	} catch (Exception e) { // catches ANY exception
+            Dialogs.create()
+            .title("Error")
+            .masthead("Could not load data from file:\n" + file.getPath() + "\nChanging to original file.");
+    		file = new File( new String( System.getProperty("user.dir") + "/resources/datebase/archetypes/original.xml" ) );
+    	}
+    	
+    	
+        try {       	
             JAXBContext context = JAXBContext
                     .newInstance(UnitArchetypeListWrapper.class);
             Unmarshaller um = context.createUnmarshaller();
@@ -47,6 +61,7 @@ public class UnitArchetypeRepository {
                     .title("Error")
                     .masthead("Could not load data from file:\n" + file.getPath())
                     .showException(e);
+            System.exit(1);
         }
     }
     
@@ -73,12 +88,35 @@ public class UnitArchetypeRepository {
         }
     }
     
+    public static void saveUnitArchetypeDataToFile(File file, List<UnitArchetype> archetypeList){
+        try {
+            JAXBContext context = JAXBContext
+                    .newInstance(UnitArchetypeListWrapper.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // Wrapping our unitArchetype data.
+            UnitArchetypeListWrapper wrapper = new UnitArchetypeListWrapper();
+            wrapper.setUnitArchetypes(archetypeList);
+
+            // Marshalling and saving XML to the file.
+            m.marshal(wrapper, file);
+
+            // Save the file path to the registry.
+            setUnitArchetypeFilePath(file);
+        } catch (Exception e) { // catches ANY exception
+            Dialogs.create().title("Error")
+                    .masthead("Could not save data to file:\n" + file.getPath())
+                    .showException(e);
+        }
+    }
+    
 
     public static File getUnitArchetypeFilePath() {
         Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
         String filePath = prefs.get("filePath", null);
         if (filePath != null) {
-            return new File(filePath);
+            return new File( filePath );
         } else {
             return null;
         }

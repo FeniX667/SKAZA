@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unitArchetypes>
+    <unitArchetype>
+        <attack>19</attack>
+        <damage>17</damage>
+        <defense>17</defense>
+        <effectiveAmountOfFighters>400</effectiveAmountOfFighters>
+        <health>10</health>
+        <name>Heavy Italic Cavalry</name>
+        <speed>12</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>18</attack>
+        <damage>16</damage>
+        <defense>19</defense>
+        <effectiveAmountOfFighters>400</effectiveAmountOfFighters>
+        <health>5</health>
+        <name>Heavy Celtic Cavalry</name>
+        <speed>12</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>20</attack>
+        <damage>15</damage>
+        <defense>9</defense>
+        <effectiveAmountOfFighters>400</effectiveAmountOfFighters>
+        <health>17</health>
+        <name>Medium Roman Cavalry</name>
+        <speed>13</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>4</attack>
+        <damage>2</damage>
+        <defense>5</defense>
+        <effectiveAmountOfFighters>400</effectiveAmountOfFighters>
+        <health>3</health>
+        <name>Light Numidian Cavalry</name>
+        <speed>15</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>4</attack>
+        <damage>12</damage>
+        <defense>18</defense>
+        <effectiveAmountOfFighters>500</effectiveAmountOfFighters>
+        <health>2</health>
+        <name>Light Iberian Infantry</name>
+        <speed>6</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>12</attack>
+        <damage>7</damage>
+        <defense>11</defense>
+        <effectiveAmountOfFighters>500</effectiveAmountOfFighters>
+        <health>16</health>
+        <name>Roman Legionary</name>
+        <speed>5</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>5</attack>
+        <damage>19</damage>
+        <defense>5</defense>
+        <effectiveAmountOfFighters>500</effectiveAmountOfFighters>
+        <health>11</health>
+        <name>Heavy Punic Infantry</name>
+        <speed>4</speed>
+    </unitArchetype>
+    <unitArchetype>
+        <attack>6</attack>
+        <damage>1</damage>
+        <defense>8</defense>
+        <effectiveAmountOfFighters>500</effectiveAmountOfFighters>
+        <health>3</health>
+        <name>Light Iberian Infantry</name>
+        <speed>6</speed>
+    </unitArchetype>
+</unitArchetypes>

@@ -15,7 +15,10 @@ public class FightCalculator {
 	}
 
 	private static Integer calculateBaseDamage(Unit attacker) {
-		return new Integer( attacker.getNrOfSoldiers() * attacker.getArchetype().getDamage() );
+		if( attacker.getNrOfSoldiers() > attacker.getArchetype().getEffectiveAmountOfFighters() )
+			return new Integer( attacker.getArchetype().getEffectiveAmountOfFighters() * attacker.getArchetype().getDamage() );
+		else
+			return new Integer( attacker.getNrOfSoldiers() * attacker.getArchetype().getDamage() );
 	}
 	
 	private static Integer calculateAttackDefenseDifference(UnitArchetype attackerArchetype,

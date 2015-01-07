@@ -1,13 +1,16 @@
 package SKAZA.view.unitArchetype;
 
+import java.io.File;
 import java.util.logging.ErrorManager;
 
 import org.controlsfx.dialog.Dialogs;
 
 import SKAZA.MainApp;
 import SKAZA.core.models.unitArchetype.UnitArchetype;
+import SKAZA.core.repository.UnitArchetypeRepository;
 import SKAZA.core.service.UnitArchetypeService;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -15,7 +18,7 @@ import javafx.stage.Stage;
 public class UnitArchetypeEditDialogController {
 
     @FXML
-    private TextField nameField;
+    private Label nameLabel;
     @FXML
     private TextField attackField;
     @FXML
@@ -42,7 +45,6 @@ public class UnitArchetypeEditDialogController {
         if ( isInputValid() ) {       	
         	unitArchetype = UnitArchetypeService.edit(
         			unitArchetype,
-        			nameField.getText(), 
         			attackField.getText(), 
         			defenseField.getText(), 
         			damageField.getText(), 
@@ -61,10 +63,7 @@ public class UnitArchetypeEditDialogController {
     
 	private boolean isInputValid() {
         String errorMessage = "";
-
-        if (nameField.getText() == null || nameField.getText().length() == 0) {
-            errorMessage += "No valid Name!\n"; 
-        }
+        
         errorMessage += parseIntegerStringAndReturnErrorCode( attackField, "Attack" );
         errorMessage += parseIntegerStringAndReturnErrorCode( defenseField, "Defence" );
         errorMessage += parseIntegerStringAndReturnErrorCode( damageField, "Damage" );
@@ -101,7 +100,7 @@ public class UnitArchetypeEditDialogController {
     public void setUnitArchetype(UnitArchetype unitArchetype) {
         this.unitArchetype = unitArchetype;
         
-        nameField.setText( unitArchetype.getName() );
+        nameLabel.setText( unitArchetype.getName() );
         attackField.setText( Integer.toString(unitArchetype.getAttack()) );
         defenseField.setText( Integer.toString(unitArchetype.getDefense()) );
         damageField.setText( Integer.toString(unitArchetype.getDamage()) );
